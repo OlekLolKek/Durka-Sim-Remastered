@@ -1,0 +1,13 @@
+# Default ignored files
+/shelf/
+/workspace.xml
+# Rider ignored files
+/projectSettingsUpdater.xml
+/contentModel.xml
+/modules.xml
+/.idea.Durka Sim Remastered.iml
+# Datasource local storage ignored files
+/../../../../../../:\UnityProjects\Durka Sim Remastered\.idea\.idea.Durka Sim Remastered\.idea/dataSources/
+/dataSources.local.xml
+# Editor-based HTTP Client requests
+/httpRequests/
