@@ -18,20 +18,28 @@ namespace DurkaSimRemastered
 
             public void Update()
             {
+                Debug.Log("animation update started");
                 if (Sleeps) return;
+                Debug.Log("not sleeps");
 
                 Counter += Time.deltaTime * Speed;
+                Debug.Log(Counter);
 
                 if (Loop)
                 {
+                    Debug.Log("Loop");
                     while (Counter > Sprites.Count)
                     {
+                        Debug.Log("counter > sprites.count");
                         Counter -= Sprites.Count;
+                        Debug.Log($"teper counter = {Counter}");
                     }
                 }
                 else if (Counter > Sprites.Count)
                 {
+                    Debug.Log("not loop");
                     Counter = Sprites.Count;
+                    Debug.Log($"Counter = {Counter}");
                     Sleeps = true;
                 }
             }
@@ -81,8 +89,11 @@ namespace DurkaSimRemastered
 
         public void Update()
         {
+            Debug.Log("update started :roflanPominki:");
+            
             foreach (var animation in _activeAnimations)
             {
+                Debug.Log(animation);
                 animation.Value.Update();
                 if (animation.Value.Counter < animation.Value.Sprites.Count)
                 {
