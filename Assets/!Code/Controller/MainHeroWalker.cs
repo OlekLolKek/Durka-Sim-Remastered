@@ -59,7 +59,7 @@ namespace DurkaSimRemastered
                 if (Mathf.Abs(_yVelocity) > FLY_THRESHOLD)
                 {
                     //TODO: fix after making the jump animations 
-                    //_spriteAnimator.StartAnimation(_view.SpriteRenderer, AnimationState.Jump, true, ANIMATIONS_SPEED);
+                    _spriteAnimator.StartAnimation(_view.SpriteRenderer, AnimationState.Jump, true, ANIMATIONS_SPEED);
                 }
 
                 _yVelocity += G * Time.deltaTime;
