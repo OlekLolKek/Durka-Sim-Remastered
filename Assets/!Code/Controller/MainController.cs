@@ -8,10 +8,12 @@ namespace DurkaSimRemastered
     {
         [SerializeField] private Camera _camera;
         [SerializeField] private LevelObjectView _playerView;
-        [SerializeField] private float _animationSpeed = 10.0f;
+        [SerializeField] private Transform _barrel;
 
         private SpriteAnimator _playerAnimator;
         private MainHeroWalker _mainHeroWalker;
+        private CameraController _cameraController;
+        private AimingMuzzle _aimingMuzzle;
         
         private void Awake()
         {
@@ -19,12 +21,18 @@ namespace DurkaSimRemastered
             _playerAnimator = new SpriteAnimator(playerConfig);
 
             _mainHeroWalker = new MainHeroWalker(_playerView, _playerAnimator);
+
+            _cameraController = new CameraController(_camera.transform, _playerView.transform);
+
+            _aimingMuzzle = new AimingMuzzle(_barrel, _camera);
         }
         
         private void Update()
         {
             _mainHeroWalker.Update();
             _playerAnimator.Update();
+            _cameraController.Update();
+            _aimingMuzzle.Update();
         }
 
         private void FixedUpdate()
