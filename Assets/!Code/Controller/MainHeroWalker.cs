@@ -70,7 +70,14 @@ namespace DurkaSimRemastered
         private void GoSideways()
         {
             _view.transform.position += Vector3.right * (Time.deltaTime * WALK_SPEED * (_xAxisInput < 0 ? -1 : 1));
-            _view.transform.localScale = (_xAxisInput < 0 ? _leftScale : _rightScale);
+            if (_xAxisInput < 0)
+            {
+                _view.transform.localScale = _leftScale;
+            }
+            else
+            {
+                _view.transform.localScale = _rightScale;
+            }
         }
 
         private bool IsGrounded()

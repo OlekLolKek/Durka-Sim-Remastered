@@ -34,10 +34,12 @@ namespace DurkaSimRemastered
             else
             {
                 _timeUntilNextBullet = DELAY;
-                _bullets[_currentIndex].Throw(_transform.position, _transform.up * START_SPEED);
+                _bullets[_currentIndex].Throw(_transform, _transform.right * START_SPEED);
                 _currentIndex++;
                 if (_currentIndex >= _bullets.Count)
+                {
                     _currentIndex = 0;
+                }
             }
             _bullets.ForEach(b => b.Update());
         }

@@ -9,8 +9,16 @@ namespace DurkaSimRemastered
 
         public void SetVisible(bool visible)
         {
-            if (_trail) _trail.enabled = visible;
-            if (_trail) _trail.Clear();
+            if (_trail)
+            {
+                _trail.enabled = visible;
+            }
+
+            if (_trail)
+            {
+                _trail.Clear();
+            }
+
             SpriteRenderer.enabled = visible;
         }
     }

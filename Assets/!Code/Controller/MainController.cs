@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 
 namespace DurkaSimRemastered
@@ -8,11 +9,14 @@ namespace DurkaSimRemastered
         [SerializeField] private Camera _camera;
         [SerializeField] private LevelObjectView _playerView;
         [SerializeField] private Transform _barrel;
+        [SerializeField] private Transform _muzzle;
+        [SerializeField] private List<BulletView> _bullets;
 
         private SpriteAnimator _playerAnimator;
         private MainHeroWalker _mainHeroWalker;
         private CameraController _cameraController;
-        private AimingMuzzle _aimingMuzzle;
+        private BarrelRotation _barrelRotation;
+        private BulletsEmitter _bulletsEmitter;
         
         private void Awake()
         {
@@ -23,7 +27,9 @@ namespace DurkaSimRemastered
 
             _cameraController = new CameraController(_camera.transform, _playerView.transform);
 
-            _aimingMuzzle = new AimingMuzzle(_barrel, _camera);
+            _barrelRotation = new BarrelRotation(_barrel, _camera, _playerView.transform);
+
+            _bulletsEmitter = new BulletsEmitter(_bullets, _muzzle);
         }
         
         private void Update()
@@ -31,7 +37,8 @@ namespace DurkaSimRemastered
             _mainHeroWalker.Update();
             _playerAnimator.Update();
             _cameraController.Update();
-            _aimingMuzzle.Update();
+            _barrelRotation.Update();
+            _bulletsEmitter.Update();
         }
 
         private void FixedUpdate()
