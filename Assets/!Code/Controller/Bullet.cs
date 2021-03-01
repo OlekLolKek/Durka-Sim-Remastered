@@ -25,7 +25,6 @@ namespace DurkaSimRemastered
         {
             if (IsGrounded())
             {
-                Debug.Log("NotGrounded");
                 SetVelocity(_velocity.Change(y: -_velocity.y));
                 _view.transform.position = _view.transform.position.Change(y: _groundLevel + _radius);
             }
