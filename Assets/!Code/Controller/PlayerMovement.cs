@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace DurkaSimRemastered
 {
-    public class MainHeroWalker : IUpdate
+    public class PlayerMovement : IUpdate
     {
         private readonly SpriteAnimator _spriteAnimator;
         private readonly LevelObjectView _view;
@@ -23,7 +23,7 @@ namespace DurkaSimRemastered
         private float _xAxisInput = 0;
         private bool _doJump = false;
 
-        public MainHeroWalker(LevelObjectView view, SpriteAnimator spriteAnimator)
+        public PlayerMovement(LevelObjectView view, SpriteAnimator spriteAnimator)
         {
             _view = view;
             _spriteAnimator = spriteAnimator;
@@ -58,7 +58,6 @@ namespace DurkaSimRemastered
                 if (goSideways) GoSideways();
                 if (Mathf.Abs(_yVelocity) > FLY_THRESHOLD)
                 {
-                    //TODO: fix after making the jump animations 
                     _spriteAnimator.StartAnimation(_view.SpriteRenderer, AnimationState.Jump, true, ANIMATIONS_SPEED);
                 }
 

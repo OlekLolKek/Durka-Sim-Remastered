@@ -13,7 +13,7 @@ namespace DurkaSimRemastered
         [SerializeField] private List<BulletView> _bullets;
 
         private SpriteAnimator _playerAnimator;
-        private MainHeroWalker _mainHeroWalker;
+        private PlayerMovement _playerMovement;
         private CameraController _cameraController;
         private BarrelRotation _barrelRotation;
         private BulletsEmitter _bulletsEmitter;
@@ -23,7 +23,7 @@ namespace DurkaSimRemastered
             SpriteAnimatorConfig playerConfig = Resources.Load<SpriteAnimatorConfig>("PlayerAnimationConfig");
             _playerAnimator = new SpriteAnimator(playerConfig);
 
-            _mainHeroWalker = new MainHeroWalker(_playerView, _playerAnimator);
+            _playerMovement = new PlayerMovement(_playerView, _playerAnimator);
 
             _cameraController = new CameraController(_camera.transform, _playerView.transform);
 
@@ -34,7 +34,7 @@ namespace DurkaSimRemastered
         
         private void Update()
         {
-            _mainHeroWalker.Update();
+            _playerMovement.Update();
             _playerAnimator.Update();
             _cameraController.Update();
             _barrelRotation.Update();
