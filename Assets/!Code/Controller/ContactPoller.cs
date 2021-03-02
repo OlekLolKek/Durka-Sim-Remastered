@@ -10,7 +10,7 @@ namespace DurkaSimRemastered
 
         private const float COLLISION_THRESHOLD = 0.5f;
 
-        private ContactPoint2D[] _contacts = new ContactPoint2D[0];
+        private ContactPoint2D[] _contacts = new ContactPoint2D[10];
         private readonly Collider2D _collider2D;
         private int _contactsCount;
 
@@ -24,13 +24,19 @@ namespace DurkaSimRemastered
 
         #endregion
 
+        public ContactPoller(Collider2D collider2D)
+        {
+            _collider2D = collider2D;
+            Debug.Log(collider2D);
+        }
+
         public void Update()
         {
             IsGrounded = false;
             HasLeftContacts = false;
             HasRightContacts = false;
             _contactsCount = _collider2D.GetContacts(_contacts);
-            
+
             for (int i = 0; i < _contactsCount; i++)
             {
                 var normal = _contacts[i].normal;

@@ -34,7 +34,6 @@ namespace DurkaSimRemastered
         
         private void Update()
         {
-            _playerMovement.Update();
             _playerAnimator.Update();
             _cameraController.Update();
             _barrelRotation.Update();
@@ -43,7 +42,7 @@ namespace DurkaSimRemastered
 
         private void FixedUpdate()
         {
-            
+            _playerMovement.FixedUpdate();
         }
 
         private void LateUpdate()
