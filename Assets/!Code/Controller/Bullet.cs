@@ -1,9 +1,11 @@
+using DurkaSimRemastered.Interface;
+using Unity.Mathematics;
 using UnityEngine;
 
 
 namespace DurkaSimRemastered
 {
-    public class Bullet
+    public sealed class Bullet : IUpdate
     {
         private readonly BulletView _view;
 
@@ -21,6 +23,18 @@ namespace DurkaSimRemastered
             _view.Rigidbody2D.angularVelocity = 0.0f;
             _view.Rigidbody2D.AddForce(velocity, ForceMode2D.Impulse);
             _view.SetVisible(true);
+        }
+
+        public void Update()
+        {
+            RotateBullet();
+        }
+
+        private void RotateBullet()
+        {
+            Vector3 velocity = _view.Rigidbody2D.velocity;
+            var angle = Mathf.Atan2(velocity.y, velocity.x) * Mathf.Rad2Deg;
+            _view.transform.rotation = Quaternion.Euler(0.0f, 0.0f, angle - 90.0f);
         }
     }
 }

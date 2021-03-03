@@ -8,10 +8,10 @@ namespace DurkaSimRemastered
     public class BulletsEmitter : IUpdate
     {
         private const float DELAY = 1.0f;
-        private const float START_SPEED = 5.0f;
+        private const float START_SPEED = 10.0f;
 
-        private List<Bullet> _bullets = new List<Bullet>();
-        private Transform _transform;
+        private readonly List<Bullet> _bullets = new List<Bullet>();
+        private readonly Transform _transform;
 
         private int _currentIndex;
         private float _timeUntilNextBullet;
@@ -40,6 +40,11 @@ namespace DurkaSimRemastered
                 {
                     _currentIndex = 0;
                 }
+            }
+
+            foreach (var bullet in _bullets)
+            {
+                bullet.Update();
             }
         }
     }

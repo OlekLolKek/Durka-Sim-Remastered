@@ -71,7 +71,7 @@ TrailRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
-  m_Time: 0.5
+  m_Time: 1
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 1
@@ -88,7 +88,7 @@ TrailRenderer:
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
-        time: 0.29061782
+        time: 0.4210652
         value: 0
         inSlope: 0
         outSlope: 0
@@ -101,8 +101,8 @@ TrailRenderer:
       m_RotationOrder: 4
     colorGradient:
       serializedVersion: 2
-      key0: {r: 1, g: 0.44855002, b: 0, a: 1}
-      key1: {r: 1, g: 0.85783035, b: 0, a: 1}
+      key0: {r: 0.12941177, g: 0.19607845, b: 0.21176472, a: 1}
+      key1: {r: 1, g: 1, b: 1, a: 0}
       key2: {r: 0, g: 0, b: 0, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}
@@ -211,7 +211,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 3
-  m_Sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 8622869308851824675, guid: 242794c51206d8343b15c87fa74350c1,
+    type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -271,7 +272,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ead29b7f373c49a3b5be2bbaa166f4c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Transform: {fileID: 51404389049412388}
   SpriteRenderer: {fileID: 51404389049412394}
   Rigidbody2D: {fileID: 2601626143607143682}
   Collider2D: {fileID: 7947899313325651067}
