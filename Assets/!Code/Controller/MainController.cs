@@ -12,6 +12,7 @@ namespace DurkaSimRemastered
         [SerializeField] private LevelObjectView _playerView;
         [SerializeField] private Transform _barrel;
         [SerializeField] private Transform _muzzle;
+        [SerializeField] private Transform _background;
         [SerializeField] private List<BulletView> _bullets;
         [SerializeField] private List<LevelObjectView> _winZones;
         [SerializeField] private List<LevelObjectView> _deathZones;
@@ -25,6 +26,7 @@ namespace DurkaSimRemastered
         private BulletsEmitter _bulletsEmitter;
         private LevelCompleteController _levelCompleteController;
         private CoinsController _coinsController;
+        private Parallax _parallax;
         
         private void Awake()
         {
@@ -41,6 +43,8 @@ namespace DurkaSimRemastered
 
             _coinAnimator = new SpriteAnimator(coinConfig);
             _coinsController = new CoinsController(_playerView, _coins, _coinAnimator);
+
+            _parallax = new Parallax(_camera.transform, _background);
         }
         
         private void Update()
@@ -50,6 +54,7 @@ namespace DurkaSimRemastered
             _barrelRotation.Update();
             _bulletsEmitter.Update();
             _coinAnimator.Update();
+            _parallax.Update();
         }
 
         private void FixedUpdate()

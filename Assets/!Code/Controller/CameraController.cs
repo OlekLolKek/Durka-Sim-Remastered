@@ -11,7 +11,7 @@ namespace DurkaSimRemastered
         private readonly Transform _player;
         private readonly float _offsetY = 0.75f;
         private readonly float _offsetZ = -10;
-        private readonly float _smoothFactor = 0.15f;
+        private readonly float _smoothFactor = 0.05f;
         
         public CameraController(Transform camera, Transform player)
         {
