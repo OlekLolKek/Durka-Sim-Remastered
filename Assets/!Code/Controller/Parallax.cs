@@ -9,7 +9,7 @@ namespace DurkaSimRemastered
         private readonly Transform _background;
         private readonly Vector3 _cameraStartPosition;
         private readonly Vector3 _backgroundStartPosition;
-        private const float RATIO = 0.3f;
+        private const float RATIO = 0.15f;
 
         public Parallax(Transform camera, Transform background)
         {
