@@ -7,7 +7,7 @@ namespace DurkaSimRemastered
     public class Controllers : IInitialize, IExecute, IFixedExecute, ILateExecute
     {
         private readonly List<IInitialize> _starts = new List<IInitialize>();
-        private readonly List<IExecute> _updates = new List<IExecute>();
+        private readonly List<IExecute> _executes = new List<IExecute>();
         private readonly List<IFixedExecute> _fixedUpdates = new List<IFixedExecute>();
         private readonly List<ILateExecute> _lateUpdates = new List<ILateExecute>();
 
@@ -18,9 +18,9 @@ namespace DurkaSimRemastered
                 _starts.Add(start);
             }
 
-            if (controller is IExecute update)
+            if (controller is IExecute execute)
             {
-                _updates.Add(update);
+                _executes.Add(execute);
             }
 
             if (controller is IFixedExecute fixedUpdate)
@@ -45,9 +45,9 @@ namespace DurkaSimRemastered
 
         public void Execute(float deltaTime)
         {
-            foreach (var update in _updates)
+            foreach (var execute in _executes)
             {
-                update.Execute(deltaTime);
+                execute.Execute(deltaTime);
             }
         }
 

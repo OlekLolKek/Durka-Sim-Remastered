@@ -18,6 +18,7 @@ namespace DurkaSimRemastered
         [SerializeField] private List<LevelObjectView> _winZones;
         [SerializeField] private List<LevelObjectView> _deathZones;
         [SerializeField] private List<LevelObjectView> _coins;
+        [SerializeField] private List<ElevatorView> _elevatorViews;
         
         private Controllers _controllers;
 
@@ -49,6 +50,9 @@ namespace DurkaSimRemastered
             
             _controllers.AddController(
                 new ParallaxController(_camera.transform, _background));
+            
+            _controllers.AddController(
+                new ElevatorController(_elevatorViews));
             
             var levelCompleteController = new LevelCompleteController(_playerView, _deathZones, _winZones);
             

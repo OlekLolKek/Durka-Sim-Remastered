@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace DurkaSimRemastered
 {
-    public class PlayerMovement : IExecute, IFixedExecute
+    public class PlayerMovement : IExecute
     {
         private readonly SpriteAnimator _spriteAnimator;
         private readonly ContactPoller _contactPoller;
@@ -33,17 +33,15 @@ namespace DurkaSimRemastered
             _spriteAnimator = new SpriteAnimator(playerConfig);
             _contactPoller = new ContactPoller(_view.Collider2D);
         }
-
+        
         public void Execute(float deltaTime)
-        {
-            _spriteAnimator.Execute(deltaTime);
-        }
-
-        public void FixedExecute()
         {
             _doJump = _inputModel.GetJumpButtonDown;
             _horizontal = _inputModel.Horizontal;
-            _contactPoller.Execute(Time.fixedDeltaTime);
+            
+            _contactPoller.Execute(Time.fixedDeltaTime); //For some reason the Update method doesn't work correctly with Time.deltaTime, the velocity changes for some reason
+                                                         //Time.fixedDeltaTime works just fine, even though it shouldn't
+                                                         //Unity is fun
 
             var isWalking = Mathf.Abs(_horizontal) > MOVING_THRESHOLD;
             
@@ -59,7 +57,7 @@ namespace DurkaSimRemastered
 
             _view.Rigidbody2D.velocity = _view.Rigidbody2D.velocity.Change(x: newVelocity);
 
-            Debug.Log($"{Time.fixedDeltaTime}");
+            Debug.Log($"{Time.time}");
             if (_contactPoller.IsGrounded && _doJump &&
                 Mathf.Abs(_view.Rigidbody2D.velocity.y) <= JUMP_THRESHOLD)
             {
@@ -76,6 +74,8 @@ namespace DurkaSimRemastered
                 var track = AnimationState.Jump;
                 _spriteAnimator.StartAnimation(_view.SpriteRenderer, track, true, ANIMATIONS_SPEED);
             }
+
+            _spriteAnimator.Execute(deltaTime);
         }
     }
 }
