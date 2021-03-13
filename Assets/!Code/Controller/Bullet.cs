@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace DurkaSimRemastered
 {
-    public sealed class Bullet : IUpdate
+    public sealed class Bullet : IExecute
     {
         private readonly BulletView _view;
 
@@ -25,7 +25,7 @@ namespace DurkaSimRemastered
             _view.SetVisible(true);
         }
 
-        public void Update()
+        public void Execute(float deltaTime)
         {
             RotateBullet();
         }

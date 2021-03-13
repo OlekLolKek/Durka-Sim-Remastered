@@ -1,7 +1,6 @@
 namespace DurkaSimRemastered.Interface
 {
-    public interface IStart
+    public interface IController
     {
-        void Start();
     }
 }

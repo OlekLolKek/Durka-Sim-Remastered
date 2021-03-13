@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace DurkaSimRemastered
 {
-    public class BulletsEmitter : IUpdate
+    public class BulletsEmitter : IExecute
     {
         private const float DELAY = 1.0f;
         private const float START_SPEED = 10.0f;
@@ -25,11 +25,11 @@ namespace DurkaSimRemastered
             }
         }
 
-        public void Update()
+        public void Execute(float deltaTime)
         {
             if (_timeUntilNextBullet > 0)
             {
-                _timeUntilNextBullet -= Time.deltaTime;
+                _timeUntilNextBullet -= deltaTime;
             }
             else
             {
@@ -44,7 +44,7 @@ namespace DurkaSimRemastered
 
             foreach (var bullet in _bullets)
             {
-                bullet.Update();
+                bullet.Execute(deltaTime);
             }
         }
     }

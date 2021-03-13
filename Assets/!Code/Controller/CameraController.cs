@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace DurkaSimRemastered
 {
-    public class CameraController : IUpdate
+    public class CameraController : IExecute
     {
         private Vector3 _velocity;
         private readonly Transform _camera;
@@ -20,7 +20,7 @@ namespace DurkaSimRemastered
         }
 
 
-        public void Update()
+        public void Execute(float deltaTime)
         {
             MoveCamera();
         }

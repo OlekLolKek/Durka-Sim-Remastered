@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Generic;
+using DurkaSimRemastered.Interface;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
 
 namespace DurkaSimRemastered
 {
-    public sealed class CoinsController : IDisposable
+    public sealed class CoinsController : IExecute, IDisposable
     {
         private const float ANIMATIONS_SPEED = 10.0f;
 
@@ -15,10 +16,10 @@ namespace DurkaSimRemastered
         private readonly List<LevelObjectView> _coinViews;
 
         public CoinsController(LevelObjectView characterView, List<LevelObjectView> coinViews, 
-            SpriteAnimator spriteAnimator)
+            SpriteAnimatorConfig coinConfig)
         {
             _characterView = characterView;
-            _spriteAnimator = spriteAnimator;
+            _spriteAnimator = new SpriteAnimator(coinConfig);;
             _coinViews = coinViews;
             _characterView.OnLevelObjectContact += OnLevelObjectContact;
 
@@ -26,6 +27,11 @@ namespace DurkaSimRemastered
             {
                 _spriteAnimator.StartAnimation(coinView.SpriteRenderer, AnimationState.Idle, true, ANIMATIONS_SPEED);
             }
+        }
+
+        public void Execute(float deltaTime)
+        {
+            _spriteAnimator.Execute(deltaTime);
         }
 
         private void OnLevelObjectContact(Collider2D collider2D)

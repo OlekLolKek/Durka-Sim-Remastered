@@ -1,11 +1,12 @@
 using System;
 using System.Collections.Generic;
+using DurkaSimRemastered.Interface;
 using UnityEngine;
 
 
 namespace DurkaSimRemastered
 {
-    public class SpriteAnimator : IDisposable
+    public class SpriteAnimator : IExecute, IDisposable
     {
         private sealed class Animation
         {
@@ -79,7 +80,7 @@ namespace DurkaSimRemastered
             }
         }
 
-        public void Update()
+        public void Execute(float deltaTime)
         {
             foreach (var animation in _activeAnimations)
             {
