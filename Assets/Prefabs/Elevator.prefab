@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5079347456155141724}
   - component: {fileID: 5079347456155141725}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ElevatorSprite (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -69,7 +69,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: -4283303606457170795, guid: 6b52c0405d8a6d9469efd550a9d164e2,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -92,7 +92,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5079347456363957803}
   - component: {fileID: 5079347456363957804}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ElevatorSprite (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -151,7 +151,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: -4283303606457170795, guid: 6b52c0405d8a6d9469efd550a9d164e2,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -174,7 +174,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5079347456365024945}
   - component: {fileID: 5079347456365024946}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ElevatorSprite (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -233,7 +233,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: -4283303606457170795, guid: 6b52c0405d8a6d9469efd550a9d164e2,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -256,7 +256,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5079347456541167440}
   - component: {fileID: 5079347456541167441}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ElevatorSprite (6)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -315,7 +315,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 1112482287800844133, guid: 6b52c0405d8a6d9469efd550a9d164e2,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -338,7 +338,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5079347457552457774}
   - component: {fileID: 5079347457552457775}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ElevatorSprite (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -397,7 +397,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: -4283303606457170795, guid: 6b52c0405d8a6d9469efd550a9d164e2,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -420,7 +420,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5079347457899697910}
   - component: {fileID: 5079347457899697911}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ElevatorSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -479,7 +479,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 8103168948674493137, guid: 6b52c0405d8a6d9469efd550a9d164e2,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -505,7 +505,7 @@ GameObject:
   - component: {fileID: 5079347457933633371}
   - component: {fileID: 5079347457933633368}
   - component: {fileID: 7376313348835939108}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Elevator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -606,7 +606,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5079347457939826682}
   - component: {fileID: 5079347457939826683}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ElevatorSprite (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -665,7 +665,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: -4283303606457170795, guid: 6b52c0405d8a6d9469efd550a9d164e2,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

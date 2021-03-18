@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Model;
+using OmniSARTechnologies.LiteFPSCounter;
 using UnityEngine;
 
 
@@ -55,7 +56,7 @@ namespace DurkaSimRemastered
                 new ElevatorController(_elevatorViews));
             
             var levelCompleteController = new LevelCompleteController(_playerView, _deathZones, _winZones);
-            
+
             _controllers.Initialize();
         }
         
