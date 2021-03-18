@@ -69,7 +69,6 @@ namespace DurkaSimRemastered
             }
         }
         
-        //TODO: change to DOTween if something goes wrong
         private void GoUp(float deltaTime)
         {
             if (_view.transform.position.y >= _maxHeight)

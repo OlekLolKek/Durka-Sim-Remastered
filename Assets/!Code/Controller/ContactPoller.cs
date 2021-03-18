@@ -21,6 +21,8 @@ namespace DurkaSimRemastered
         #region Properties
 
         public bool IsGrounded { get; private set; }
+        public bool IsStandingOnElevator { get; private set; }
+        public bool IsStandingOnPlatform { get; private set; }
         public bool HasLeftContacts { get; private set; }
         public bool HasRightContacts { get; private set; }
 
@@ -34,6 +36,8 @@ namespace DurkaSimRemastered
         public void Execute(float deltaTime)
         {
             IsGrounded = false;
+            IsStandingOnElevator = false;
+            IsStandingOnPlatform = false;
             HasLeftContacts = false;
             HasRightContacts = false;
             _contactsCount = _collider2D.GetContacts(_contacts);
@@ -46,6 +50,15 @@ namespace DurkaSimRemastered
                 if (normal.y > COLLISION_THRESHOLD)
                 {
                     IsGrounded = true;
+                    if (_contacts[i].collider.gameObject.TryGetComponent(out ElevatorView _))
+                    {
+                        IsStandingOnElevator = true;
+                    }
+
+                    if (_contacts[i].collider.gameObject.TryGetComponent(out PlatformView _))
+                    {
+                        IsStandingOnPlatform = true;
+                    }
                 }
 
                 if (normal.x > COLLISION_THRESHOLD && rigidbody == null)

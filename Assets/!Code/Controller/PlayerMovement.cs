@@ -21,9 +21,13 @@ namespace DurkaSimRemastered
         private const float MOVING_THRESHOLD = 0.1f;
         private const float JUMP_THRESHOLD = 0.1f;
         private const float FLY_THRESHOLD = 1.0f;
-        
-        private bool _doJump = false;
-        private float _horizontal = 0.0f;
+        private const float FALL_THRESHOLD = -0.1f;
+        private const float FALL_TIME = 0.125f;
+
+        private float _fallTimer;
+        private bool _doJump;
+        private float _horizontal;
+        private float _vertical;
 
         public PlayerMovement(LevelObjectView view, SpriteAnimatorConfig playerConfig,
             InputModel inputModel)
@@ -38,16 +42,40 @@ namespace DurkaSimRemastered
         {
             _doJump = _inputModel.GetJumpButtonDown;
             _horizontal = _inputModel.Horizontal;
+            _vertical = _inputModel.Vertical;
             
-            _contactPoller.Execute(Time.fixedDeltaTime); //For some reason the Update method doesn't work correctly with Time.deltaTime, the velocity changes for some reason
-                                                         //Time.fixedDeltaTime works just fine, even though it shouldn't
-                                                         //Unity is fun
+            _contactPoller.Execute(Time.fixedDeltaTime); 
+            
+            //For some reason the Update method doesn't work correctly with Time.deltaTime, the velocity changes for some reason
+            //Time.fixedDeltaTime works just fine, even though it shouldn't
 
             var isWalking = Mathf.Abs(_horizontal) > MOVING_THRESHOLD;
             
-            //TODO: change to scale shifting
-            if (isWalking) _view.SpriteRenderer.flipX = _horizontal < 0;
+            Walk(isWalking);
+
+            Jump();
+
+            Animate(isWalking, deltaTime);
+
+            Fall(deltaTime);
+        }
+
+        private void Walk(bool isWalking)
+        {
+            if (isWalking)
+            {
+                if (_horizontal < 0)
+                {
+                    _view.transform.localScale = _leftScale;
+                }
+                else
+                {
+                    _view.transform.localScale = _rightScale;
+                }
+            }
+
             var newVelocity = 0.0f;
+            
             if (isWalking
                 && (_horizontal > 0 || !_contactPoller.HasLeftContacts)
                 && (_horizontal < 0 || !_contactPoller.HasRightContacts))
@@ -56,14 +84,19 @@ namespace DurkaSimRemastered
             }
 
             _view.Rigidbody2D.velocity = _view.Rigidbody2D.velocity.Change(x: newVelocity);
+        }
 
-            Debug.Log($"{Time.time}");
+        private void Jump()
+        {
             if (_contactPoller.IsGrounded && _doJump &&
                 Mathf.Abs(_view.Rigidbody2D.velocity.y) <= JUMP_THRESHOLD)
             {
                 _view.Rigidbody2D.AddForce(Vector3.up * JUMP_FORCE);
             }
+        }
 
+        private void Animate(bool isWalking, float deltaTime)
+        {
             if (_contactPoller.IsGrounded)
             {
                 var track = isWalking ? AnimationState.Run : AnimationState.Idle;
@@ -74,8 +107,28 @@ namespace DurkaSimRemastered
                 var track = AnimationState.Jump;
                 _spriteAnimator.StartAnimation(_view.SpriteRenderer, track, true, ANIMATIONS_SPEED);
             }
-
+            
             _spriteAnimator.Execute(deltaTime);
+        }
+
+        private void Fall(float deltaTime)
+        {
+            if (_view.Collider2D.isTrigger)
+            {
+                _fallTimer -= deltaTime;
+                if (_fallTimer <= 0.0f)
+                {
+                    _view.Collider2D.isTrigger = false;
+                }
+            }
+            if (_contactPoller.IsStandingOnPlatform)
+            {
+                if (_vertical < FALL_THRESHOLD)
+                {
+                    _fallTimer = FALL_TIME;
+                    _view.Collider2D.isTrigger = true;
+                }
+            }
         }
     }
 }
