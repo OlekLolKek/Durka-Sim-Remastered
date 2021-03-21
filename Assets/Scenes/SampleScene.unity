@@ -19651,6 +19651,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerConfigPath: PlayerAnimationConfig
   _coinConfigPath: CoinAnimationConfig
+  _aiConfigPath: AIConfig
   _camera: {fileID: 1348476146}
   _playerView: {fileID: 867678738}
   _barrel: {fileID: 702119746}
@@ -19931,9 +19932,8 @@ GameObject:
   m_Component:
   - component: {fileID: 545770161}
   - component: {fileID: 545770160}
-  - component: {fileID: 545770162}
   m_Layer: 0
-  m_Name: Enemy
+  m_Name: Pathfinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -20040,28 +20040,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &545770162
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 545770159}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8275603a9f0645a48ff3696ba861f426, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _stalkerAIConfig:
-    Speed: 25
-    MinDistanceToTarget: 1
-    MinSqrDistanceToTarget: 1
-    Waypoints:
-    - {fileID: 809311902}
-    - {fileID: 938215071}
-  _stalkerAIView: {fileID: 1442712176}
-  _stalkerAISeeker: {fileID: 1442712181}
-  _stalkerAITarget: {fileID: 867678740}
 --- !u!4 &563003815 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5079347457933633367, guid: abd2cc3591265cc449fd03e84f793e60,
@@ -22973,7 +22951,6 @@ GameObject:
   - component: {fileID: 1442712175}
   - component: {fileID: 1442712181}
   - component: {fileID: 1442712174}
-  - component: {fileID: 1442712179}
   m_Layer: 12
   m_Name: Robot
   m_TagString: Untagged
@@ -22996,7 +22973,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -23098,42 +23075,6 @@ Transform:
   m_Father: {fileID: 772735039}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1442712179
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1442712173}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f6eb1402c17e84a9282a7f0f62eb584f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  version: 2
-  radius: 0.5
-  height: 2
-  repathRate: 0.5
-  canSearch: 1
-  canMove: 1
-  maxSpeed: 1
-  gravity: {x: NaN, y: NaN, z: NaN}
-  groundMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  centerOffsetCompatibility: NaN
-  orientation: 1
-  enableRotation: 1
-  targetCompatibility: {fileID: 0}
-  maxAcceleration: -2.5
-  rotationSpeed: 360
-  slowdownDistance: 0.6
-  pickNextWaypointDist: 2
-  endReachedDistance: 0.2
-  alwaysDrawGizmos: 0
-  slowWhenNotFacingTarget: 1
-  whenCloseToDestination: 0
-  constrainInsideGraph: 0
 --- !u!114 &1442712181
 MonoBehaviour:
   m_ObjectHideFlags: 0
