@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace DurkaSimRemastered
 {
-    public class BarrelRotation : IUpdate
+    public class BarrelRotation : IExecute
     {
         private readonly Camera _camera;
         private readonly Transform _playerTransform;
@@ -18,7 +18,7 @@ namespace DurkaSimRemastered
             _playerTransform = player;
         }
 
-        public void Update()
+        public void Execute(float deltaTime)
         {
             var newPosition = _playerTransform.position;
             newPosition.y += 0.5f;

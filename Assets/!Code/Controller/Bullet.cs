@@ -1,19 +1,13 @@
 using DurkaSimRemastered.Interface;
+using Unity.Mathematics;
 using UnityEngine;
 
 
 namespace DurkaSimRemastered
 {
-    public class Bullet : IUpdate
+    public sealed class Bullet : IExecute
     {
         private readonly BulletView _view;
-        private Vector3 _velocity;
-        private Transform _muzzle;
-        
-        private float _radius = 0.3f;
-        private float _groundLevel = -1.0f;
-        private float _g = -10.0f;
-        
 
         public Bullet(BulletView view)
         {
@@ -21,42 +15,26 @@ namespace DurkaSimRemastered
             _view.SetVisible(false);
         }
 
-        public void Update()
+        public void Throw(Vector3 position, Vector3 velocity)
         {
-            if (IsGrounded())
-            {
-                SetVelocity(_velocity.Change(y: -_velocity.y));
-                _view.transform.position = _view.transform.position.Change(y: _groundLevel + _radius);
-            }
-            else
-            {
-                SetVelocity(_velocity + Vector3.up * (_g * Time.deltaTime));
-                _view.transform.position += _velocity * Time.deltaTime;
-            }
-        }
-
-        public void Throw(Transform parent, Vector3 velocity)
-        {
-            _muzzle = parent;
-            _view.transform.SetParent(parent);
-            _view.transform.localPosition = Vector3.zero;
-            _view.transform.SetParent(null);
-            
-            SetVelocity(velocity);
+            _view.SetVisible(false);
+            _view.transform.position = position;
+            _view.Rigidbody2D.velocity = Vector2.zero;
+            _view.Rigidbody2D.angularVelocity = 0.0f;
+            _view.Rigidbody2D.AddForce(velocity, ForceMode2D.Impulse);
             _view.SetVisible(true);
         }
 
-        private void SetVelocity(Vector3 velocity)
+        public void Execute(float deltaTime)
         {
-            _velocity = velocity;
-            var angle = Vector3.Angle(Vector3.left, _velocity);
-            var axis = Vector3.Cross(Vector3.left, _velocity);
-            _view.transform.rotation = Quaternion.AngleAxis(angle, axis);
+            RotateBullet();
         }
-        
-        private bool IsGrounded()
+
+        private void RotateBullet()
         {
-            return _view.transform.position.y <= _groundLevel + _radius + float.Epsilon && _velocity.y <= 0;
+            Vector3 velocity = _view.Rigidbody2D.velocity;
+            var angle = Mathf.Atan2(velocity.y, velocity.x) * Mathf.Rad2Deg;
+            _view.transform.rotation = Quaternion.Euler(0.0f, 0.0f, angle - 90.0f);
         }
     }
 }

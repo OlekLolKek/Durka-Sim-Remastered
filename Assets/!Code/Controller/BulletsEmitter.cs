@@ -5,13 +5,13 @@ using UnityEngine;
 
 namespace DurkaSimRemastered
 {
-    public class BulletsEmitter : IUpdate
+    public class BulletsEmitter : IExecute
     {
         private const float DELAY = 1.0f;
-        private const float START_SPEED = 5.0f;
+        private const float START_SPEED = 10.0f;
 
-        private List<Bullet> _bullets = new List<Bullet>();
-        private Transform _transform;
+        private readonly List<Bullet> _bullets = new List<Bullet>();
+        private readonly Transform _transform;
 
         private int _currentIndex;
         private float _timeUntilNextBullet;
@@ -25,23 +25,27 @@ namespace DurkaSimRemastered
             }
         }
 
-        public void Update()
+        public void Execute(float deltaTime)
         {
             if (_timeUntilNextBullet > 0)
             {
-                _timeUntilNextBullet -= Time.deltaTime;
+                _timeUntilNextBullet -= deltaTime;
             }
             else
             {
                 _timeUntilNextBullet = DELAY;
-                _bullets[_currentIndex].Throw(_transform, _transform.right * START_SPEED);
+                _bullets[_currentIndex].Throw(_transform.position, _transform.right * START_SPEED);
                 _currentIndex++;
                 if (_currentIndex >= _bullets.Count)
                 {
                     _currentIndex = 0;
                 }
             }
-            _bullets.ForEach(b => b.Update());
+
+            foreach (var bullet in _bullets)
+            {
+                bullet.Execute(deltaTime);
+            }
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Model;
 using UnityEngine;
 
 
@@ -6,49 +7,72 @@ namespace DurkaSimRemastered
 {
     public class MainController : MonoBehaviour
     {
+        [SerializeField] private string _playerConfigPath = "PlayerAnimationConfig";
+        [SerializeField] private string _coinConfigPath = "CoinAnimationConfig";
         [SerializeField] private Camera _camera;
         [SerializeField] private LevelObjectView _playerView;
         [SerializeField] private Transform _barrel;
         [SerializeField] private Transform _muzzle;
+        [SerializeField] private Transform _background;
         [SerializeField] private List<BulletView> _bullets;
-
-        private SpriteAnimator _playerAnimator;
-        private MainHeroWalker _mainHeroWalker;
-        private CameraController _cameraController;
-        private BarrelRotation _barrelRotation;
-        private BulletsEmitter _bulletsEmitter;
+        [SerializeField] private List<LevelObjectView> _winZones;
+        [SerializeField] private List<LevelObjectView> _deathZones;
+        [SerializeField] private List<LevelObjectView> _coins;
+        [SerializeField] private List<ElevatorView> _elevatorViews;
         
+        private Controllers _controllers;
+
         private void Awake()
         {
-            SpriteAnimatorConfig playerConfig = Resources.Load<SpriteAnimatorConfig>("PlayerAnimationConfig");
-            _playerAnimator = new SpriteAnimator(playerConfig);
-
-            _mainHeroWalker = new MainHeroWalker(_playerView, _playerAnimator);
-
-            _cameraController = new CameraController(_camera.transform, _playerView.transform);
-
-            _barrelRotation = new BarrelRotation(_barrel, _camera, _playerView.transform);
-
-            _bulletsEmitter = new BulletsEmitter(_bullets, _muzzle);
+            _controllers = new Controllers();
+            
+            var playerConfig = Resources.Load<SpriteAnimatorConfig>(_playerConfigPath);
+            var coinConfig = Resources.Load<SpriteAnimatorConfig>(_coinConfigPath);
+            var inputModel = new InputModel();
+            
+            _controllers.AddController(
+                new InputController(inputModel));
+            
+            _controllers.AddController(
+                new PlayerMovement(_playerView, playerConfig, inputModel));
+            
+            _controllers.AddController(
+                new CameraController(_camera.transform, _playerView.transform));
+            
+            _controllers.AddController(
+                new BarrelRotation(_barrel, _camera, _playerView.transform));
+            
+            _controllers.AddController(
+                new BulletsEmitter(_bullets, _muzzle));
+            
+            _controllers.AddController(
+                new CoinsController(_playerView, _coins, coinConfig));
+            
+            _controllers.AddController(
+                new ParallaxController(_camera.transform, _background));
+            
+            _controllers.AddController(
+                new ElevatorController(_elevatorViews));
+            
+            var levelCompleteController = new LevelCompleteController(_playerView, _deathZones, _winZones);
+            
+            _controllers.Initialize();
         }
         
         private void Update()
         {
-            _mainHeroWalker.Update();
-            _playerAnimator.Update();
-            _cameraController.Update();
-            _barrelRotation.Update();
-            _bulletsEmitter.Update();
+            var deltaTime = Time.deltaTime;
+            _controllers.Execute(deltaTime);
         }
 
         private void FixedUpdate()
         {
-            
+            _controllers.FixedExecute();
         }
 
         private void LateUpdate()
         {
-            
+            _controllers.LateExecute();
         }
     }
 }
