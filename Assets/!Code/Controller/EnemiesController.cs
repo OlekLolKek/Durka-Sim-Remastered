@@ -11,11 +11,13 @@ namespace DurkaSimRemastered
 {
     public class EnemiesController : IExecute, IFixedExecute
     {
-        private List<StalkerAI> _crawlers = new List<StalkerAI>();
+        private readonly List<StalkerAI> _crawlers = new List<StalkerAI>();
+        private readonly SpriteAnimatorConfig _robotConfig;
 
-        public EnemiesController(AIConfig aiConfig, Transform playerTransform)
+        public EnemiesController(AIConfig aiConfig, Transform playerTransform, SpriteAnimatorConfig robotConfig)
         {
             var seekers = Object.FindObjectsOfType<Seeker>().ToList();
+            var animator = new SpriteAnimator(robotConfig);
             
             foreach (var seeker in seekers)
             {
@@ -24,7 +26,7 @@ namespace DurkaSimRemastered
                     throw new ArgumentNullException($"{seeker} doesn't have a {typeof(LevelObjectView)} component.");
                 }
                 
-                _crawlers.Add(new StalkerAI(levelObjectView, aiConfig, seeker, playerTransform));
+                _crawlers.Add(new StalkerAI(levelObjectView, aiConfig, seeker, playerTransform, animator));
             }
         }
         

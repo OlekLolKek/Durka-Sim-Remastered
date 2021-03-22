@@ -10,6 +10,7 @@ namespace DurkaSimRemastered
     {
         [SerializeField] private string _playerConfigPath = "PlayerAnimationConfig";
         [SerializeField] private string _coinConfigPath = "CoinAnimationConfig";
+        [SerializeField] private string _robotConfigPath = "RobotAnimationConfig";
         [SerializeField] private string _aiConfigPath = "AIConfig";
         [SerializeField] private Camera _camera;
         [SerializeField] private LevelObjectView _playerView;
@@ -30,6 +31,7 @@ namespace DurkaSimRemastered
             
             var playerConfig = Resources.Load<SpriteAnimatorConfig>(_playerConfigPath);
             var coinConfig = Resources.Load<SpriteAnimatorConfig>(_coinConfigPath);
+            var robotConfig = Resources.Load<SpriteAnimatorConfig>(_robotConfigPath);
             var aiConfig = Resources.Load<AIConfig>(_aiConfigPath);
             var inputModel = new InputModel();
             
@@ -58,7 +60,7 @@ namespace DurkaSimRemastered
                 new ElevatorController(_elevatorViews));
             
             _controllers.AddController(
-                new EnemiesController(aiConfig, _playerView.transform));
+                new EnemiesController(aiConfig, _playerView.transform, robotConfig));
             
             var levelCompleteController = new LevelCompleteController(_playerView, _deathZones, _winZones);
 

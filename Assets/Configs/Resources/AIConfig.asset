@@ -12,6 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d555863e199b41c48f4290804be68ae4, type: 3}
   m_Name: AIConfig
   m_EditorClassIdentifier: 
-  _speed: 40
-  _rotationSpeed: 2.5
+  _speed: 64
+  _rotationSpeed: 2
   _minSqrDistanceToTarget: 1
+  _visibilityLength: 10
+  _layerMask:
+    serializedVersion: 2
+    m_Bits: 1537

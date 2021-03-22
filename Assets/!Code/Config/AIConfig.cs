@@ -9,9 +9,15 @@ namespace DurkaSimRemastered
         [SerializeField] private float _speed;
         [SerializeField] private float _rotationSpeed;
         [SerializeField] private float _minSqrDistanceToTarget;
+        [SerializeField] private float _visibilityLength;
+        [SerializeField] private float _playerHeightOffset = 0.5f;
+        [SerializeField] private LayerMask _layerMask;
 
         public float Speed => _speed;
         public float RotationSpeed => _rotationSpeed;
         public float MinSqrDistanceToTarget => _minSqrDistanceToTarget;
+        public float VisibilityLength => _visibilityLength;
+        public float PlayerHeightOffset => _playerHeightOffset;
+        public LayerMask LayerMask => _layerMask;
     }
 }
