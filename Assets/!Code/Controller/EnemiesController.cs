@@ -17,8 +17,7 @@ namespace DurkaSimRemastered
         public EnemiesController(AIConfig aiConfig, Transform playerTransform, SpriteAnimatorConfig robotConfig)
         {
             var seekers = Object.FindObjectsOfType<Seeker>().ToList();
-            var animator = new SpriteAnimator(robotConfig);
-            
+
             foreach (var seeker in seekers)
             {
                 if (!seeker.TryGetComponent(out LevelObjectView levelObjectView))
@@ -26,7 +25,7 @@ namespace DurkaSimRemastered
                     throw new ArgumentNullException($"{seeker} doesn't have a {typeof(LevelObjectView)} component.");
                 }
                 
-                _crawlers.Add(new StalkerAI(levelObjectView, aiConfig, seeker, playerTransform, animator));
+                _crawlers.Add(new StalkerAI(levelObjectView, aiConfig, seeker, playerTransform, robotConfig));
             }
         }
         

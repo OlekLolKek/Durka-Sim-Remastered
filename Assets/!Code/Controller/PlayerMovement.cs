@@ -97,18 +97,18 @@ namespace DurkaSimRemastered
         }
 
         private void Animate(bool isWalking, float deltaTime)
-        {
-            if (_contactPoller.IsGrounded)
-            {
-                var track = isWalking ? AnimationState.Run : AnimationState.Idle;
-                _spriteAnimator.StartAnimation(_view.SpriteRenderer, track, true, ANIMATIONS_SPEED);
-            }
-            else if (Mathf.Abs(_view.Rigidbody2D.velocity.y) > FLY_THRESHOLD)
+        {   
+            if (Mathf.Abs(_view.Rigidbody2D.velocity.y) > FLY_THRESHOLD)
             {
                 var track = AnimationState.Jump;
                 _spriteAnimator.StartAnimation(_view.SpriteRenderer, track, true, ANIMATIONS_SPEED);
             }
-            
+            else if (_contactPoller.IsGrounded)
+            {
+                var track = isWalking ? AnimationState.Run : AnimationState.Idle;
+                _spriteAnimator.StartAnimation(_view.SpriteRenderer, track, true, ANIMATIONS_SPEED);
+            }
+
             _spriteAnimator.Execute(deltaTime);
         }
 
