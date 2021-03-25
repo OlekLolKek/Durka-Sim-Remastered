@@ -25,8 +25,15 @@ namespace DurkaSimRemastered
 
         public Vector2 CalculateVelocity(Vector2 fromPosition)
         {
-            if (_path == null) return Vector2.zero;
-            if (_currentPointIndex >= _path.vectorPath.Count) return Vector2.zero;
+            if (_path == null)
+            {
+                return Vector2.zero;
+            }
+
+            if (_currentPointIndex >= _path.vectorPath.Count)
+            {
+                return Vector2.zero;
+            }
 
             var direction = ((Vector2) _path.vectorPath[_currentPointIndex] - fromPosition).normalized;
             var result = _config.Speed * direction;
@@ -39,11 +46,15 @@ namespace DurkaSimRemastered
             return result;
         }
 
-        #endregion
-
-        public Path GetPath()
+        public Vector3 CalculateDirection(Vector2 fromPosition)
         {
-            return _path;
+            if (_path == null) return Vector2.zero;
+            if (_currentPointIndex >= _path.vectorPath.Count) return Vector2.zero;
+            
+            var direction = ((Vector2) _path.vectorPath[_currentPointIndex] - fromPosition).normalized;
+            return direction;
         }
+
+        #endregion
     }
 }

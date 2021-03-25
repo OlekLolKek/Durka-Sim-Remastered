@@ -27,7 +27,6 @@ namespace Random_Generation
             {
                 for (var y = 0; y < _squareGrid.Squares.GetLength(1); y++)
                 {
-
                     DrawTileInControlNode(_squareGrid.Squares[x, y].TopLeft.Active,
                         _squareGrid.Squares[x, y].TopLeft.Position);
                     DrawTileInControlNode(_squareGrid.Squares[x, y].TopRight.Active,

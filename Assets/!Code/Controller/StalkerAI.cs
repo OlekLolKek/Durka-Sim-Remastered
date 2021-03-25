@@ -11,19 +11,22 @@ namespace DurkaSimRemastered
     {
         private List<RaycastHit2D> _raycastResults;
         
-        private readonly SpriteAnimator _spriteAnimatorConfig;
+        private float _recalculatePathTimer;
+        
+        private readonly float _rotationSpeed;
+        
+        private readonly SpriteAnimator _spriteAnimator;
         private readonly LevelObjectView _view;
         private readonly StalkerAIModel _model;
+        private readonly Transform _target;
         private readonly AIConfig _config;
         private readonly Seeker _seeker;
-        private readonly Transform _target;
 
-        private readonly float _rotationSpeed;
-        private const float IDLE_VELOCITY_THRESHOLD = 0.1f;
-        private const float ANIMATION_SPEED = 10.0f;
         private const float RECALCULATE_PATH_FREQUENCY = 0.5f;
         private const float SPRITE_ROTATION_OFFSET = -90.0f;
-        private float _recalculatePathTimer;
+        private const float IDLE_VELOCITY_THRESHOLD = 0.1f;
+        private const float ROTATION_THRESHOLD = 0.1f;
+        private const float ANIMATION_SPEED = 5.0f;
 
         public StalkerAI(LevelObjectView view, AIConfig config, 
             Seeker seeker, Transform target, SpriteAnimatorConfig animatorConfig)
@@ -33,7 +36,7 @@ namespace DurkaSimRemastered
             _seeker = seeker != null ? seeker : throw new ArgumentNullException(nameof(seeker));
             _target = target != null ? target : throw new ArgumentNullException(nameof(target));
 
-            _spriteAnimatorConfig = new SpriteAnimator(animatorConfig);
+            _spriteAnimator = new SpriteAnimator(animatorConfig);
 
             _model = new StalkerAIModel(_config);
             _rotationSpeed = _config.RotationSpeed;
@@ -49,6 +52,7 @@ namespace DurkaSimRemastered
         public void Execute(float deltaTime)
         {
             _recalculatePathTimer += deltaTime;
+            _spriteAnimator.Execute(deltaTime);
 
             if (_recalculatePathTimer >= RECALCULATE_PATH_FREQUENCY)
             {
@@ -63,33 +67,32 @@ namespace DurkaSimRemastered
             var position = _view.transform.position;
             
             var newVelocity = _model.CalculateVelocity(position) * Time.fixedDeltaTime;
+            var direction = _model.CalculateDirection(position);
             _view.Rigidbody2D.velocity = newVelocity;
             
-            Rotate();
-            Animate();
+            Rotate(direction);
+            Animate(direction);
         }
 
-        private void Rotate()
+        private void Rotate(Vector3 direction)
         {
-            if (_view.Rigidbody2D.velocity.magnitude <= 0.25f)
+            if (_view.Rigidbody2D.velocity.magnitude <= ROTATION_THRESHOLD)
                 return;
-            
-            Vector3 target = _view.Rigidbody2D.velocity;
-            var direction = target;
+
             var angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
             var rotation = Quaternion.Euler(new Vector3(0.0f, 0.0f, angle + SPRITE_ROTATION_OFFSET));
-            _view.transform.rotation = Quaternion.Slerp(_view.transform.rotation, rotation, _rotationSpeed * Time.fixedDeltaTime);
+            _view.transform.rotation = Quaternion.Lerp(_view.transform.rotation, rotation, _rotationSpeed * Time.fixedDeltaTime);
         }
 
-        private void Animate()
+        private void Animate(Vector3 velocity)
         {
-            if (_view.Rigidbody2D.velocity.magnitude < IDLE_VELOCITY_THRESHOLD)
+            if (velocity.magnitude < IDLE_VELOCITY_THRESHOLD)
             {
-                _spriteAnimatorConfig.StartAnimation(_view.SpriteRenderer, AnimationState.Idle, true, ANIMATION_SPEED);
+                _spriteAnimator.StartAnimation(_view.SpriteRenderer, AnimationState.Idle, true, ANIMATION_SPEED);
             }
             else
             {
-                _spriteAnimatorConfig.StartAnimation(_view.SpriteRenderer, AnimationState.Run, true, ANIMATION_SPEED);
+                _spriteAnimator.StartAnimation(_view.SpriteRenderer, AnimationState.Run, true, ANIMATION_SPEED);
             }
         }
 
