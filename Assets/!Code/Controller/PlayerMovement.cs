@@ -22,7 +22,8 @@ namespace DurkaSimRemastered
         private const float JUMP_THRESHOLD = 0.1f;
         private const float FLY_THRESHOLD = 1.0f;
         private const float FALL_THRESHOLD = -0.1f;
-        private const float FALL_TIME = 0.125f;
+        private const float FALL_TIME = 0.33f;
+        private const float ELEVATOR_FALL_TIME = 0.125f;
 
         private float _fallTimer;
         private bool _doJump;
@@ -96,29 +97,31 @@ namespace DurkaSimRemastered
         }
 
         private void Animate(bool isWalking, float deltaTime)
-        {
-            if (_contactPoller.IsGrounded)
-            {
-                var track = isWalking ? AnimationState.Run : AnimationState.Idle;
-                _spriteAnimator.StartAnimation(_view.SpriteRenderer, track, true, ANIMATIONS_SPEED);
-            }
-            else if (Mathf.Abs(_view.Rigidbody2D.velocity.y) > FLY_THRESHOLD)
+        {   
+            if (Mathf.Abs(_view.Rigidbody2D.velocity.y) > FLY_THRESHOLD)
             {
                 var track = AnimationState.Jump;
                 _spriteAnimator.StartAnimation(_view.SpriteRenderer, track, true, ANIMATIONS_SPEED);
             }
-            
+            else if (_contactPoller.IsGrounded)
+            {
+                var track = isWalking ? AnimationState.Run : AnimationState.Idle;
+                _spriteAnimator.StartAnimation(_view.SpriteRenderer, track, true, ANIMATIONS_SPEED);
+            }
+
             _spriteAnimator.Execute(deltaTime);
         }
 
         private void Fall(float deltaTime)
         {
-            if (_view.Collider2D.isTrigger)
+            if (Physics2D.GetIgnoreLayerCollision(LayerID.PLAYER_LAYER, LayerID.ELEVATOR_LAYER)
+            || Physics2D.GetIgnoreLayerCollision(LayerID.PLAYER_LAYER, LayerID.PLATFORM_LAYER))
             {
                 _fallTimer -= deltaTime;
                 if (_fallTimer <= 0.0f)
                 {
-                    _view.Collider2D.isTrigger = false;
+                    Physics2D.IgnoreLayerCollision(LayerID.PLAYER_LAYER, LayerID.ELEVATOR_LAYER, false);
+                    Physics2D.IgnoreLayerCollision(LayerID.PLAYER_LAYER, LayerID.PLATFORM_LAYER, false);
                 }
             }
             if (_contactPoller.IsStandingOnPlatform)
@@ -126,7 +129,16 @@ namespace DurkaSimRemastered
                 if (_vertical < FALL_THRESHOLD)
                 {
                     _fallTimer = FALL_TIME;
-                    _view.Collider2D.isTrigger = true;
+                    Physics2D.IgnoreLayerCollision(LayerID.PLAYER_LAYER, LayerID.PLATFORM_LAYER);
+                }
+            }
+
+            if (_contactPoller.IsStandingOnElevator)
+            {
+                if (_vertical < FALL_THRESHOLD)
+                {
+                    _fallTimer = ELEVATOR_FALL_TIME;
+                    Physics2D.IgnoreLayerCollision(LayerID.PLAYER_LAYER, LayerID.ELEVATOR_LAYER);
                 }
             }
         }

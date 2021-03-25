@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Model;
+using OmniSARTechnologies.LiteFPSCounter;
 using UnityEngine;
 
 
@@ -9,6 +10,8 @@ namespace DurkaSimRemastered
     {
         [SerializeField] private string _playerConfigPath = "PlayerAnimationConfig";
         [SerializeField] private string _coinConfigPath = "CoinAnimationConfig";
+        [SerializeField] private string _robotConfigPath = "RobotAnimationConfig";
+        [SerializeField] private string _aiConfigPath = "AIConfig";
         [SerializeField] private Camera _camera;
         [SerializeField] private LevelObjectView _playerView;
         [SerializeField] private Transform _barrel;
@@ -19,7 +22,7 @@ namespace DurkaSimRemastered
         [SerializeField] private List<LevelObjectView> _deathZones;
         [SerializeField] private List<LevelObjectView> _coins;
         [SerializeField] private List<ElevatorView> _elevatorViews;
-        
+
         private Controllers _controllers;
 
         private void Awake()
@@ -28,6 +31,8 @@ namespace DurkaSimRemastered
             
             var playerConfig = Resources.Load<SpriteAnimatorConfig>(_playerConfigPath);
             var coinConfig = Resources.Load<SpriteAnimatorConfig>(_coinConfigPath);
+            var robotConfig = Resources.Load<SpriteAnimatorConfig>(_robotConfigPath);
+            var aiConfig = Resources.Load<AIConfig>(_aiConfigPath);
             var inputModel = new InputModel();
             
             _controllers.AddController(
@@ -42,8 +47,8 @@ namespace DurkaSimRemastered
             _controllers.AddController(
                 new BarrelRotation(_barrel, _camera, _playerView.transform));
             
-            _controllers.AddController(
-                new BulletsEmitter(_bullets, _muzzle));
+            //_controllers.AddController(
+            //    new BulletsEmitter(_bullets, _muzzle));
             
             _controllers.AddController(
                 new CoinsController(_playerView, _coins, coinConfig));
@@ -54,8 +59,11 @@ namespace DurkaSimRemastered
             _controllers.AddController(
                 new ElevatorController(_elevatorViews));
             
-            var levelCompleteController = new LevelCompleteController(_playerView, _deathZones, _winZones);
+            _controllers.AddController(
+                new EnemiesController(aiConfig, _playerView.transform, robotConfig));
             
+            var levelCompleteController = new LevelCompleteController(_playerView, _deathZones, _winZones);
+
             _controllers.Initialize();
         }
         
