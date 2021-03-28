@@ -4,18 +4,19 @@ using DurkaSimRemastered.Interface;
 
 namespace DurkaSimRemastered
 {
-    public class Controllers : IInitialize, IExecute, IFixedExecute, ILateExecute
+    public class Controllers : IInitialize, IExecute, IFixedExecute, ILateExecute, ICleanup
     {
-        private readonly List<IInitialize> _starts = new List<IInitialize>();
+        private readonly List<IInitialize> _initializes = new List<IInitialize>();
         private readonly List<IExecute> _executes = new List<IExecute>();
-        private readonly List<IFixedExecute> _fixedUpdates = new List<IFixedExecute>();
-        private readonly List<ILateExecute> _lateUpdates = new List<ILateExecute>();
+        private readonly List<IFixedExecute> _fixedExecutes = new List<IFixedExecute>();
+        private readonly List<ILateExecute> _lateExecutes = new List<ILateExecute>();
+        private readonly List<ICleanup> _cleanups = new List<ICleanup>();
 
         public void AddController(IController controller)
         {
-            if (controller is IInitialize start)
+            if (controller is IInitialize initialize)
             {
-                _starts.Add(start);
+                _initializes.Add(initialize);
             }
 
             if (controller is IExecute execute)
@@ -23,23 +24,28 @@ namespace DurkaSimRemastered
                 _executes.Add(execute);
             }
 
-            if (controller is IFixedExecute fixedUpdate)
+            if (controller is IFixedExecute fixedExecute)
             {
-                _fixedUpdates.Add(fixedUpdate);
+                _fixedExecutes.Add(fixedExecute);
             }
 
-            if (controller is ILateExecute lateUpdate)
+            if (controller is ILateExecute lateExecute)
             {
-                _lateUpdates.Add(lateUpdate);
+                _lateExecutes.Add(lateExecute);
+            }
+
+            if (controller is ICleanup cleanup)
+            {
+                _cleanups.Add(cleanup);
             }
         }
         
             
         public void Initialize()
         {
-            foreach (var start in _starts)
+            foreach (var initialize in _initializes)
             {
-                start.Initialize();
+                initialize.Initialize();
             }
         }
 
@@ -53,17 +59,25 @@ namespace DurkaSimRemastered
 
         public void FixedExecute()
         {
-            foreach (var fixedUpdate in _fixedUpdates)
+            foreach (var fixedExecute in _fixedExecutes)
             {
-                fixedUpdate.FixedExecute();
+                fixedExecute.FixedExecute();
             }
         }
 
         public void LateExecute()
         {
-            foreach (var lateUpdate in _lateUpdates)
+            foreach (var lateExecute in _lateExecutes)
             {
-                lateUpdate.LateExecute();
+                lateExecute.LateExecute();
+            }
+        }
+
+        public void Cleanup()
+        {
+            foreach (var cleanup in _cleanups)
+            {
+                cleanup.Cleanup();
             }
         }
     }

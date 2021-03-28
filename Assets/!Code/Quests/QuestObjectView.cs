@@ -17,17 +17,17 @@ namespace Quests
 
         private void Awake()
         {
-            _defaultColor = SpriteRenderer.color;
+            //_defaultColor = SpriteRenderer.color;
         }
 
-        public void ProcessComplete()
+        public virtual void ProcessComplete()
         {
             SpriteRenderer.color = _completedColor;
         }
 
         public void ProcessActivate()
         {
-            SpriteRenderer.color = _defaultColor;
+            //SpriteRenderer.color = _defaultColor;
         }
 
         #endregion

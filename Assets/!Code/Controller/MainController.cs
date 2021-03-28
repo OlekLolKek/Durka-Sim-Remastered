@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Model;
-using OmniSARTechnologies.LiteFPSCounter;
+using Quests;
 using UnityEngine;
 
 
@@ -62,6 +63,8 @@ namespace DurkaSimRemastered
             _controllers.AddController(
                 new EnemiesController(aiConfig, _playerView.transform, robotConfig));
             
+            _controllers.AddController(new QuestController());
+            
             var levelCompleteController = new LevelCompleteController(_playerView, _deathZones, _winZones);
 
             _controllers.Initialize();
@@ -81,6 +84,11 @@ namespace DurkaSimRemastered
         private void LateUpdate()
         {
             _controllers.LateExecute();
+        }
+
+        private void OnDestroy()
+        {
+            _controllers.Cleanup();
         }
     }
 }

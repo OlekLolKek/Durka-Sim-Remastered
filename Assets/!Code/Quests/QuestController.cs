@@ -2,16 +2,18 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using DurkaSimRemastered;
+using DurkaSimRemastered.Interface;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 
 namespace Quests
 {
-    public class QuestsConfigurator : MonoBehaviour
+    public class QuestController : IInitialize, ICleanup
     {
-        [SerializeField] private QuestObjectView _singleQuestView;
-        [SerializeField] private QuestStoryConfig[] _questStoryConfigs;
-        [SerializeField] private QuestObjectView[] _questObjects;
+        private readonly QuestObjectView[] _singleQuestViews;
+        private readonly QuestStoryConfig[] _questStoryConfigs;
+        private readonly QuestObjectView[] _questObjects;
 
         private readonly Dictionary<QuestType, Func<IQuestModel>> _questFactories =
             new Dictionary<QuestType, Func<IQuestModel>>
@@ -26,15 +28,25 @@ namespace Quests
             };
 
         private List<IQuestStory> _questStories;
-        private Quest _singleQuest;
+        private Quest[] _singleQuests;
 
-        private void Start()
+        public QuestController()
         {
-            _singleQuest = new Quest(_singleQuestView, new SwitchQuestModel());
-            _singleQuest.Reset();
+            var questSceneConfig = Object.FindObjectOfType<QuestsSceneConfig>();
+            _singleQuestViews = questSceneConfig.SingleQuestViews;
+            _questStoryConfigs = questSceneConfig.QuestStoryConfigs;
+            _questObjects = questSceneConfig.QuestObjects;
+        }
+        
+        public void Initialize()
+        {
+            _singleQuests = new Quest[_singleQuestViews.Length];
+            for (int i = 0; i < _singleQuests.Length; i++)
+            {
+                _singleQuests[i] = new Quest(_singleQuestViews[i], new SwitchQuestModel());
+                _singleQuests[i].Reset();
+            }
 
-            
-            //TODO: figure out what this is
             _questStories = new List<IQuestStory>();
             foreach (var questStoryConfig in _questStoryConfigs)
             {
@@ -42,9 +54,19 @@ namespace Quests
             }
         }
 
-        private void OnDestroy()
+        public void Cleanup()
         {
-            _singleQuest.Dispose();
+            foreach (var questStory in _questStories)
+            {
+                questStory.Dispose();
+            }
+
+            _questStories.Clear();
+            
+            foreach (var singleQuest in _singleQuests)
+            {
+                singleQuest.Dispose();
+            }
         }
 
         private IQuestStory CreateQuestStory(QuestStoryConfig config)
@@ -68,7 +90,7 @@ namespace Quests
             var questView = _questObjects.FirstOrDefault(value => value.ID == config.ID);
             if (questView == null)
             {
-                Debug.LogWarning($"QuestsConfigurator :: Start : Can't find view of quest {questId.ToString()}");
+                Debug.LogWarning($"{this} :: {nameof(Initialize)} : Can't find view of quest {questId.ToString()}");
                 return null;
             }
 
@@ -78,7 +100,7 @@ namespace Quests
                 return new Quest(questView, questModel);
             }
 
-            Debug.LogWarning($"QuestsConfigurator :: Start : Can't create model for quest {questId.ToString()}");
+            Debug.LogWarning($"{this} :: {nameof(Initialize)} : Can't create model for quest {questId.ToString()}");
             return null;
         }
     }

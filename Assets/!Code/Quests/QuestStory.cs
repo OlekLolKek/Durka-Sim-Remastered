@@ -37,7 +37,6 @@ namespace Quests
 
         private void OnQuestCompleted(object sender, IQuest quest)
         {
-            Debug.Log("OnQuestCompleted");
             var index = _questsCollection.IndexOf(quest);
             if (IsDone)
             {

@@ -54,7 +54,7 @@ namespace Quests
 
         private void OnCompleted()
         {
-            Debug.Log($"OnCompleted");
+            Debug.Log($"Quest {_view.ID} completed!");
             Completed?.Invoke(this, this);
         }
 
