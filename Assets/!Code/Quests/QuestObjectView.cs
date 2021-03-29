@@ -6,28 +6,18 @@ namespace Quests
 {
     public class QuestObjectView : LevelObjectView
     {
-        [SerializeField] private Color _completedColor;
-        [SerializeField] private int _id;
-
-        private Color _defaultColor;
+        [SerializeField] protected int _id;
 
         public int ID => _id;
 
         #region Methods
 
-        private void Awake()
-        {
-            //_defaultColor = SpriteRenderer.color;
-        }
-
         public virtual void ProcessComplete()
         {
-            SpriteRenderer.color = _completedColor;
         }
 
-        public void ProcessActivate()
+        public virtual void ProcessActivate()
         {
-            //SpriteRenderer.color = _defaultColor;
         }
 
         #endregion

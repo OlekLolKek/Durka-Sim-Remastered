@@ -9,9 +9,10 @@ namespace DurkaSimRemastered
 {
     public class MainController : MonoBehaviour
     {
-        [SerializeField] private string _playerConfigPath = "PlayerAnimationConfig";
-        [SerializeField] private string _coinConfigPath = "CoinAnimationConfig";
-        [SerializeField] private string _robotConfigPath = "RobotAnimationConfig";
+        [SerializeField] private string _playerConfigPath = "Animation/PlayerAnimationConfig";
+        [SerializeField] private string _coinConfigPath = "Animation/CoinAnimationConfig";
+        [SerializeField] private string _robotConfigPath = "Animation/RobotAnimationConfig";
+        [SerializeField] private string _leverConfigPath = "Animation/LeverAnimationConfig";
         [SerializeField] private string _aiConfigPath = "AIConfig";
         [SerializeField] private Camera _camera;
         [SerializeField] private LevelObjectView _playerView;
@@ -33,7 +34,15 @@ namespace DurkaSimRemastered
             var playerConfig = Resources.Load<SpriteAnimatorConfig>(_playerConfigPath);
             var coinConfig = Resources.Load<SpriteAnimatorConfig>(_coinConfigPath);
             var robotConfig = Resources.Load<SpriteAnimatorConfig>(_robotConfigPath);
+            var leverConfig = Resources.Load<SpriteAnimatorConfig>(_leverConfigPath);
+            
+            Debug.Log(playerConfig);
+            Debug.Log(coinConfig);
+            Debug.Log(robotConfig);
+            Debug.Log(leverConfig);
+
             var aiConfig = Resources.Load<AIConfig>(_aiConfigPath);
+            
             var inputModel = new InputModel();
             
             _controllers.AddController(
@@ -63,7 +72,8 @@ namespace DurkaSimRemastered
             _controllers.AddController(
                 new EnemiesController(aiConfig, _playerView.transform, robotConfig));
             
-            _controllers.AddController(new QuestController());
+            _controllers.AddController(
+                new QuestController(leverConfig));
             
             var levelCompleteController = new LevelCompleteController(_playerView, _deathZones, _winZones);
 

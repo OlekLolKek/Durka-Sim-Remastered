@@ -9,7 +9,7 @@ using Object = UnityEngine.Object;
 
 namespace Quests
 {
-    public class QuestController : IInitialize, ICleanup
+    public class QuestController : IInitialize, IExecute, ICleanup
     {
         private readonly QuestObjectView[] _singleQuestViews;
         private readonly QuestStoryConfig[] _questStoryConfigs;
@@ -30,12 +30,15 @@ namespace Quests
         private List<IQuestStory> _questStories;
         private Quest[] _singleQuests;
 
-        public QuestController()
+        private readonly SpriteAnimator _bridgeQuestViewAnimator;
+
+        public QuestController(SpriteAnimatorConfig leverConfig)
         {
             var questSceneConfig = Object.FindObjectOfType<QuestsSceneConfig>();
             _singleQuestViews = questSceneConfig.SingleQuestViews;
             _questStoryConfigs = questSceneConfig.QuestStoryConfigs;
             _questObjects = questSceneConfig.QuestObjects;
+            _bridgeQuestViewAnimator = new SpriteAnimator(leverConfig);
         }
         
         public void Initialize()
@@ -45,6 +48,10 @@ namespace Quests
             {
                 _singleQuests[i] = new Quest(_singleQuestViews[i], new SwitchQuestModel());
                 _singleQuests[i].Reset();
+                if (_singleQuestViews[i] is BridgeQuestView bridgeQuestView)
+                {
+                    bridgeQuestView.InjectSpriteAnimator(_bridgeQuestViewAnimator);
+                }
             }
 
             _questStories = new List<IQuestStory>();
@@ -52,6 +59,11 @@ namespace Quests
             {
                 _questStories.Add(CreateQuestStory(questStoryConfig));
             }
+        }
+
+        public void Execute(float deltaTime)
+        {
+            _bridgeQuestViewAnimator.Execute(deltaTime);
         }
 
         public void Cleanup()
