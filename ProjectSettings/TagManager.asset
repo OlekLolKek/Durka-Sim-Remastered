@@ -13,12 +13,12 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Elevator
+  - Player
+  - Platform
+  - Collectible
+  - Enemy
+  - Interactable
   - 
   - 
   - 

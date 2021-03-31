@@ -21,7 +21,7 @@ namespace DurkaSimRemastered
             _characterView = characterView;
             _spriteAnimator = new SpriteAnimator(coinConfig);;
             _coinViews = coinViews;
-            _characterView.OnLevelObjectContact += OnLevelObjectContact;
+            _characterView.OnTriggerEnter += OnLevelObjectContact;
 
             foreach (var coinView in coinViews)
             {
@@ -47,7 +47,7 @@ namespace DurkaSimRemastered
 
         public void Dispose()
         {
-            _characterView.OnLevelObjectContact -= OnLevelObjectContact;
+            _characterView.OnTriggerEnter -= OnLevelObjectContact;
         }
     }
 }
