@@ -13,9 +13,11 @@ namespace DurkaSimRemastered
         [SerializeField] private string _coinConfigPath = "Animation/CoinAnimationConfig";
         [SerializeField] private string _robotConfigPath = "Animation/RobotAnimationConfig";
         [SerializeField] private string _leverConfigPath = "Animation/LeverAnimationConfig";
+        [SerializeField] private string _interactionButtonHintConfigPath = "Animation/InteractionButtonAnimationConfig";
         [SerializeField] private string _aiConfigPath = "AIConfig";
         [SerializeField] private Camera _camera;
         [SerializeField] private LevelObjectView _playerView;
+        [SerializeField] private LevelObjectView _interactionButtonHintView;
         [SerializeField] private Transform _barrel;
         [SerializeField] private Transform _muzzle;
         [SerializeField] private Transform _background;
@@ -31,19 +33,16 @@ namespace DurkaSimRemastered
         {
             _controllers = new Controllers();
             
+            var interactionButtonHintConfig = Resources.Load<SpriteAnimatorConfig>(_interactionButtonHintConfigPath);
             var playerConfig = Resources.Load<SpriteAnimatorConfig>(_playerConfigPath);
             var coinConfig = Resources.Load<SpriteAnimatorConfig>(_coinConfigPath);
             var robotConfig = Resources.Load<SpriteAnimatorConfig>(_robotConfigPath);
             var leverConfig = Resources.Load<SpriteAnimatorConfig>(_leverConfigPath);
-            
-            Debug.Log(playerConfig);
-            Debug.Log(coinConfig);
-            Debug.Log(robotConfig);
-            Debug.Log(leverConfig);
 
             var aiConfig = Resources.Load<AIConfig>(_aiConfigPath);
             
             var inputModel = new InputModel();
+            var playerInteractionModel = new PlayerInteractionModel();
             
             _controllers.AddController(
                 new InputController(inputModel));
@@ -73,7 +72,12 @@ namespace DurkaSimRemastered
                 new EnemiesController(aiConfig, _playerView.transform, robotConfig));
             
             _controllers.AddController(
-                new QuestController(leverConfig));
+                new QuestController(leverConfig, playerInteractionModel));
+            
+            _controllers.AddController(
+                new InteractionHintSpriteController(playerInteractionModel, 
+                    interactionButtonHintConfig, _interactionButtonHintView,
+                    _playerView));
             
             var levelCompleteController = new LevelCompleteController(_playerView, _deathZones, _winZones);
 

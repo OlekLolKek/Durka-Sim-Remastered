@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using DurkaSimRemastered;
 using DurkaSimRemastered.Interface;
+using Model;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -30,15 +31,17 @@ namespace Quests
         private List<IQuestStory> _questStories;
         private Quest[] _singleQuests;
 
+        private readonly PlayerInteractionModel _playerInteractionModel;
         private readonly SpriteAnimator _bridgeQuestViewAnimator;
 
-        public QuestController(SpriteAnimatorConfig leverConfig)
+        public QuestController(SpriteAnimatorConfig leverConfig, PlayerInteractionModel playerInteractionModel)
         {
             var questSceneConfig = Object.FindObjectOfType<QuestsSceneConfig>();
             _singleQuestViews = questSceneConfig.SingleQuestViews;
             _questStoryConfigs = questSceneConfig.QuestStoryConfigs;
             _questObjects = questSceneConfig.QuestObjects;
             _bridgeQuestViewAnimator = new SpriteAnimator(leverConfig);
+            _playerInteractionModel = playerInteractionModel;
         }
         
         public void Initialize()
@@ -46,7 +49,7 @@ namespace Quests
             _singleQuests = new Quest[_singleQuestViews.Length];
             for (int i = 0; i < _singleQuests.Length; i++)
             {
-                _singleQuests[i] = new Quest(_singleQuestViews[i], new SwitchQuestModel());
+                _singleQuests[i] = new Quest(_singleQuestViews[i], new SwitchQuestModel(), _playerInteractionModel);
                 _singleQuests[i].Reset();
                 if (_singleQuestViews[i] is BridgeQuestView bridgeQuestView)
                 {
@@ -109,7 +112,7 @@ namespace Quests
             if (_questFactories.TryGetValue(config.QuestType, out var factory))
             {
                 var questModel = factory.Invoke();
-                return new Quest(questView, questModel);
+                return new Quest(questView, questModel, _playerInteractionModel);
             }
 
             Debug.LogWarning($"{this} :: {nameof(Initialize)} : Can't create model for quest {questId.ToString()}");
