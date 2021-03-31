@@ -13,6 +13,7 @@ namespace Quests
         private readonly IQuestModel _model;
 
         private bool _active;
+        private bool _isPlayerInTrigger;
         
         public event EventHandler<IQuest> Completed;
         public bool IsCompleted { get; private set; }
@@ -27,19 +28,20 @@ namespace Quests
 
         #region Methods
 
-        private void OnContact(Collider2D other)
+        private void OnTriggerEnter(Collider2D other)
         {
-            //TODO: decide if this check is needed at all or using `other.gameObject` is fine
+            _isPlayerInTrigger = true;
             
-            if (!other.TryGetComponent(out LevelObjectView levelObjectView))
-            {
-                return;
-            }
-            var completed = _model.TryComplete(levelObjectView.gameObject);
+            var completed = _model.TryComplete(other.gameObject);
             if (completed)
             {
                 Complete();
             }
+        }
+
+        private void OnTriggerExit(Collider2D other)
+        {
+            _isPlayerInTrigger = false;
         }
 
         private void Complete()
@@ -47,7 +49,8 @@ namespace Quests
             if (!_active) return;
             _active = false;
             IsCompleted = true;
-            _view.OnLevelObjectContact -= OnContact;
+            _view.OnTriggerEnter -= OnTriggerEnter;
+            _view.OnTriggerExit -= OnTriggerExit;
             _view.ProcessComplete();
             OnCompleted();
         }
@@ -67,13 +70,15 @@ namespace Quests
 
             _active = true;
             IsCompleted = false;
-            _view.OnLevelObjectContact += OnContact;
+            _view.OnTriggerEnter += OnTriggerEnter;
+            _view.OnTriggerExit += OnTriggerExit;
             _view.ProcessActivate();
         }
         
         public void Dispose()
         {
-            _view.OnLevelObjectContact -= OnContact;
+            _view.OnTriggerEnter -= OnTriggerEnter;
+            _view.OnTriggerExit -= OnTriggerExit;
         }
 
         #endregion

@@ -16,7 +16,7 @@ namespace DurkaSimRemastered
             List<LevelObjectView> winZones)
         {
             _startPosition = characterView.transform.position;
-            characterView.OnLevelObjectContact += OnLevelObjectContact;
+            characterView.OnTriggerEnter += OnLevelObjectContact;
             
             _characterView = characterView;
             _deathZones = deathZones;
@@ -35,7 +35,7 @@ namespace DurkaSimRemastered
         
         public void Dispose()
         {
-            _characterView.OnLevelObjectContact -= OnLevelObjectContact;
+            _characterView.OnTriggerEnter -= OnLevelObjectContact;
         }
     }
 }

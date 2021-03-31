@@ -14,11 +14,17 @@ namespace DurkaSimRemastered
         public Rigidbody2D Rigidbody2D => _rigidbody2D;
         public Collider2D Collider2D => _collider2D;
         
-        public Action<Collider2D> OnLevelObjectContact { get; set; }
+        public Action<Collider2D> OnTriggerEnter { get; set; }
+        public Action<Collider2D> OnTriggerExit { get; set; }
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            OnLevelObjectContact?.Invoke(other);
+            OnTriggerEnter?.Invoke(other);
+        }
+
+        private void OnTriggerExit2D(Collider2D other)
+        {
+            OnTriggerExit?.Invoke(other);
         }
     }
 }

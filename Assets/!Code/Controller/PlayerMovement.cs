@@ -129,6 +129,7 @@ namespace DurkaSimRemastered
                 if (_vertical < FALL_THRESHOLD)
                 {
                     _fallTimer = FALL_TIME;
+                    Debug.Log("Falling");
                     Physics2D.IgnoreLayerCollision(LayerID.PLAYER_LAYER, LayerID.PLATFORM_LAYER);
                 }
             }
