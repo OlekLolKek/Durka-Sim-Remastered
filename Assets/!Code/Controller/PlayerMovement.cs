@@ -63,6 +63,8 @@ namespace DurkaSimRemastered
 
         private void Walk(bool isWalking)
         {
+            var newVelocity = 0.0f;
+            
             if (isWalking)
             {
                 if (_horizontal < 0)
@@ -73,15 +75,12 @@ namespace DurkaSimRemastered
                 {
                     _view.transform.localScale = _rightScale;
                 }
-            }
-
-            var newVelocity = 0.0f;
-            
-            if (isWalking
-                && (_horizontal > 0 || !_contactPoller.HasLeftContacts)
-                && (_horizontal < 0 || !_contactPoller.HasRightContacts))
-            {
-                newVelocity = Time.fixedDeltaTime * _horizontal * WALK_SPEED;
+                            
+                if ((_horizontal > 0 && !_contactPoller.HasRightContacts)
+                    || (_horizontal < 0 && !_contactPoller.HasLeftContacts))
+                {
+                    newVelocity = Time.fixedDeltaTime * _horizontal * WALK_SPEED;
+                }
             }
 
             _view.Rigidbody2D.velocity = _view.Rigidbody2D.velocity.Change(x: newVelocity);

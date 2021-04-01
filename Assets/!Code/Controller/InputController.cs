@@ -20,7 +20,6 @@ namespace DurkaSimRemastered
             _inputModel.Vertical = Input.GetAxisRaw(AxisNames.VERTICAL);
             _inputModel.GetFireButtonDown = Input.GetKeyDown(AxisNames.FIRE);
             _inputModel.GetJumpButtonDown = Input.GetKeyDown(AxisNames.JUMP);
-            Debug.Log(_inputModel.GetInteractButtonDown = Input.GetKeyDown(AxisNames.INTERACT));
             _inputModel.GetInteractButtonDown = Input.GetKeyDown(AxisNames.INTERACT);
         }
     }

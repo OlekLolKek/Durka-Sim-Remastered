@@ -22,6 +22,7 @@ namespace DurkaSimRemastered
         [SerializeField] private Transform _muzzle;
         [SerializeField] private Transform _background;
         [SerializeField] private List<BulletView> _bullets;
+        [SerializeField] private List<BulletParticleSystemView> _bulletParticles;
         [SerializeField] private List<LevelObjectView> _winZones;
         [SerializeField] private List<LevelObjectView> _deathZones;
         [SerializeField] private List<LevelObjectView> _coins;
@@ -56,8 +57,8 @@ namespace DurkaSimRemastered
             _controllers.AddController(
                 new BarrelRotation(_barrel, _camera, _playerView.transform));
             
-            //_controllers.AddController(
-            //    new BulletsEmitter(_bullets, _muzzle));
+            _controllers.AddController(
+                new ShootController(_bullets, _bulletParticles, _muzzle, inputModel));
             
             _controllers.AddController(
                 new CoinsController(_playerView, _coins, coinConfig));

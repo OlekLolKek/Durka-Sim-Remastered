@@ -272,7 +272,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ead29b7f373c49a3b5be2bbaa166f4c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SpriteRenderer: {fileID: 51404389049412394}
-  Rigidbody2D: {fileID: 2601626143607143682}
-  Collider2D: {fileID: 7947899313325651067}
+  _spriteRenderer: {fileID: 51404389049412394}
+  _rigidbody2D: {fileID: 2601626143607143682}
+  _collider2D: {fileID: 7947899313325651067}
   _trail: {fileID: 51404388991921069}
