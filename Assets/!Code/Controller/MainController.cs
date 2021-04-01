@@ -72,7 +72,8 @@ namespace DurkaSimRemastered
                 new EnemiesController(aiConfig, _playerView.transform, robotConfig));
             
             _controllers.AddController(
-                new QuestController(leverConfig, playerInteractionModel));
+                new QuestController(leverConfig, playerInteractionModel,
+                    inputModel));
             
             _controllers.AddController(
                 new InteractionHintSpriteController(playerInteractionModel, 

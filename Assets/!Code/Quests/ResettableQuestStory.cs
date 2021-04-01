@@ -35,6 +35,20 @@ namespace Quests
                 quest.Completed -= OnQuestCompleted;
             }
         }
+        
+        public void Execute(float deltaTime)
+        {
+            foreach (var quest in _questsCollection)
+            {
+                if (!quest.IsCompleted)
+                {
+                    if (quest.IsPlayerNear)
+                    {
+                        quest.Execute(deltaTime);
+                    }
+                }
+            }
+        }
 
         private void OnQuestCompleted(object sender, IQuest quest)
         {

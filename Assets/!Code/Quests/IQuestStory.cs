@@ -1,9 +1,10 @@
 using System;
+using DurkaSimRemastered.Interface;
 
 
 namespace Quests
 {
-    public interface IQuestStory : IDisposable
+    public interface IQuestStory : IExecute, IDisposable 
     {
         bool IsDone { get; }
     }

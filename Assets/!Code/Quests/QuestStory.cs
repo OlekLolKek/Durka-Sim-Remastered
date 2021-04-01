@@ -65,7 +65,21 @@ namespace Quests
                 _questsCollection[index].Reset();
             }
         }
-        
+
+        public void Execute(float deltaTime)
+        {
+            foreach (var quest in _questsCollection)
+            {
+                if (!quest.IsCompleted)
+                {
+                    if (quest.IsPlayerNear)
+                    {
+                        quest.Execute(deltaTime);
+                    }
+                }
+            }
+        }
+
         public void Dispose()
         {
             Unsubscribe();

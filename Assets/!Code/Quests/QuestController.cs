@@ -33,8 +33,11 @@ namespace Quests
 
         private readonly PlayerInteractionModel _playerInteractionModel;
         private readonly SpriteAnimator _bridgeQuestViewAnimator;
+        private readonly InputModel _inputModel;
 
-        public QuestController(SpriteAnimatorConfig leverConfig, PlayerInteractionModel playerInteractionModel)
+        public QuestController(SpriteAnimatorConfig leverConfig, 
+            PlayerInteractionModel playerInteractionModel,
+            InputModel inputModel)
         {
             var questSceneConfig = Object.FindObjectOfType<QuestsSceneConfig>();
             _singleQuestViews = questSceneConfig.SingleQuestViews;
@@ -42,6 +45,7 @@ namespace Quests
             _questObjects = questSceneConfig.QuestObjects;
             _bridgeQuestViewAnimator = new SpriteAnimator(leverConfig);
             _playerInteractionModel = playerInteractionModel;
+            _inputModel = inputModel;
         }
         
         public void Initialize()
@@ -49,7 +53,7 @@ namespace Quests
             _singleQuests = new Quest[_singleQuestViews.Length];
             for (int i = 0; i < _singleQuests.Length; i++)
             {
-                _singleQuests[i] = new Quest(_singleQuestViews[i], new SwitchQuestModel(), _playerInteractionModel);
+                _singleQuests[i] = new Quest(_singleQuestViews[i], new SwitchQuestModel(), _playerInteractionModel, _inputModel);
                 _singleQuests[i].Reset();
                 if (_singleQuestViews[i] is BridgeQuestView bridgeQuestView)
                 {
@@ -67,6 +71,16 @@ namespace Quests
         public void Execute(float deltaTime)
         {
             _bridgeQuestViewAnimator.Execute(deltaTime);
+            foreach (var singleQuest in _singleQuests)
+            {
+                if (!singleQuest.IsCompleted)
+                {
+                    if (singleQuest.IsPlayerNear)
+                    {
+                        singleQuest.Execute(deltaTime);
+                    }
+                }
+            }
         }
 
         public void Cleanup()
@@ -112,7 +126,7 @@ namespace Quests
             if (_questFactories.TryGetValue(config.QuestType, out var factory))
             {
                 var questModel = factory.Invoke();
-                return new Quest(questView, questModel, _playerInteractionModel);
+                return new Quest(questView, questModel, _playerInteractionModel, _inputModel);
             }
 
             Debug.LogWarning($"{this} :: {nameof(Initialize)} : Can't create model for quest {questId.ToString()}");
