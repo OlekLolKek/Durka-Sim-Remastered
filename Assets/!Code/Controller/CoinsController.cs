@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using DurkaSimRemastered.Interface;
+using Model;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -13,14 +14,16 @@ namespace DurkaSimRemastered
 
         private readonly LevelObjectView _characterView;
         private readonly SpriteAnimator _spriteAnimator;
+        private readonly AmmoModel _ammoModel;
         private readonly List<LevelObjectView> _coinViews;
 
         public CoinsController(LevelObjectView characterView, List<LevelObjectView> coinViews, 
-            SpriteAnimatorConfig coinConfig)
+            SpriteAnimatorConfig coinConfig, AmmoModel ammoModel)
         {
             _characterView = characterView;
             _spriteAnimator = new SpriteAnimator(coinConfig);;
             _coinViews = coinViews;
+            _ammoModel = ammoModel;
             _characterView.OnTriggerEnter += OnLevelObjectContact;
 
             foreach (var coinView in coinViews)
@@ -41,6 +44,7 @@ namespace DurkaSimRemastered
             if (_coinViews.Contains(contactView))
             {
                 _spriteAnimator.StopAnimation(contactView.SpriteRenderer);
+                _ammoModel.SetAmmoCount(_ammoModel.AmmoCount + 1);
                 Object.Destroy(contactView.gameObject);
             }
         }

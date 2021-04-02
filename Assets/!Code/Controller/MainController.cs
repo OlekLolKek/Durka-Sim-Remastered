@@ -44,6 +44,7 @@ namespace DurkaSimRemastered
             
             var inputModel = new InputModel();
             var playerInteractionModel = new PlayerInteractionModel();
+            var ammoModel = new AmmoModel();
             
             _controllers.AddController(
                 new InputController(inputModel));
@@ -58,10 +59,12 @@ namespace DurkaSimRemastered
                 new BarrelRotation(_barrel, _camera, _playerView.transform));
             
             _controllers.AddController(
-                new ShootController(_bullets, _bulletParticles, _muzzle, inputModel));
+                new ShootController(_bullets, _bulletParticles, _muzzle, 
+                    inputModel, ammoModel));
             
             _controllers.AddController(
-                new CoinsController(_playerView, _coins, coinConfig));
+                new CoinsController(_playerView, _coins, coinConfig,
+                    ammoModel));
             
             _controllers.AddController(
                 new ParallaxController(_camera.transform, _background));
@@ -80,6 +83,9 @@ namespace DurkaSimRemastered
                 new InteractionHintSpriteController(playerInteractionModel, 
                     interactionButtonHintConfig, _interactionButtonHintView,
                     _playerView));
+            
+            _controllers.AddController(
+                new UIController(ammoModel));
             
             var levelCompleteController = new LevelCompleteController(_playerView, _deathZones, _winZones);
 
