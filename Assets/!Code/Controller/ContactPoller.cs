@@ -9,7 +9,6 @@ namespace DurkaSimRemastered
         #region Fields
 
         private const float COLLISION_THRESHOLD = 0.5f;
-        private const float STAIRS_COLLISION_THRESHOLD = 0.85f;
 
         private readonly ContactPoint2D[] _contacts = new ContactPoint2D[10];
         private readonly Collider2D _collider2D;
@@ -20,6 +19,7 @@ namespace DurkaSimRemastered
         
         #region Properties
 
+        public Vector2 GroundVelocity { get; private set; }
         public bool IsGrounded { get; private set; }
         public bool IsStandingOnElevator { get; private set; }
         public bool IsStandingOnPlatform { get; private set; }
@@ -47,9 +47,12 @@ namespace DurkaSimRemastered
                 var normal = _contacts[i].normal;
                 var rigidbody = _contacts[i].rigidbody;
                 
+                bool hasRigidbody = rigidbody != null;
+                
                 if (normal.y > COLLISION_THRESHOLD)
                 {
                     IsGrounded = true;
+                    
                     if (_contacts[i].collider.gameObject.TryGetComponent(out ElevatorView _))
                     {
                         IsStandingOnElevator = true;
@@ -61,12 +64,17 @@ namespace DurkaSimRemastered
                     }
                 }
 
-                if (normal.x > COLLISION_THRESHOLD && rigidbody == null)
+                if (hasRigidbody)
+                {
+                    GroundVelocity = rigidbody.velocity;
+                }
+
+                if (normal.x > COLLISION_THRESHOLD && !hasRigidbody)
                 {
                     HasLeftContacts = true;
                 }
 
-                if (normal.x < -COLLISION_THRESHOLD && rigidbody == null)
+                if (normal.x < -COLLISION_THRESHOLD && !hasRigidbody)
                 {
                     HasRightContacts = true;
                 }

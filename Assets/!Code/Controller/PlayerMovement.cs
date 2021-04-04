@@ -16,14 +16,12 @@ namespace DurkaSimRemastered
         private readonly Vector3 _rightScale = new Vector3(1.0f, 1.0f, 1.0f);
 
         private const float WALK_SPEED = 150.0f;
-        private const float ANIMATIONS_SPEED = 10.0f;
         private const float JUMP_FORCE = 400.0f;
         private const float MOVING_THRESHOLD = 0.1f;
         private const float JUMP_THRESHOLD = 0.1f;
-        private const float FLY_THRESHOLD = 1.0f;
         private const float FALL_THRESHOLD = -0.1f;
         private const float FALL_TIME = 0.33f;
-        private const float ELEVATOR_FALL_TIME = 0.125f;
+        private const float ELEVATOR_FALL_TIME = 0.33f;
 
         private float _fallTimer;
         private bool _doJump;
@@ -89,23 +87,29 @@ namespace DurkaSimRemastered
         private void Jump()
         {
             if (_contactPoller.IsGrounded && _doJump &&
-                Mathf.Abs(_view.Rigidbody2D.velocity.y) <= JUMP_THRESHOLD)
+                Mathf.Abs(_view.Rigidbody2D.velocity.y - 
+                          _contactPoller.GroundVelocity.y) <= JUMP_THRESHOLD)
             {
                 _view.Rigidbody2D.AddForce(Vector3.up * JUMP_FORCE);
             }
         }
 
         private void Animate(bool isWalking, float deltaTime)
-        {   
-            if (Mathf.Abs(_view.Rigidbody2D.velocity.y) > FLY_THRESHOLD)
+        {
+            if (!_contactPoller.IsGrounded)
             {
-                var track = AnimationState.Jump;
-                _spriteAnimator.StartAnimation(_view.SpriteRenderer, track, true, ANIMATIONS_SPEED);
+                _spriteAnimator.StartAnimation(_view.SpriteRenderer, AnimationState.Jump, true, AnimationSpeeds.NORMAL_ANIMATION_SPEED);
             }
-            else if (_contactPoller.IsGrounded)
+            else
             {
-                var track = isWalking ? AnimationState.Run : AnimationState.Idle;
-                _spriteAnimator.StartAnimation(_view.SpriteRenderer, track, true, ANIMATIONS_SPEED);
+                if (isWalking)
+                {
+                    _spriteAnimator.StartAnimation(_view.SpriteRenderer, AnimationState.Run, true, AnimationSpeeds.NORMAL_ANIMATION_SPEED);
+                }
+                else
+                {
+                    _spriteAnimator.StartAnimation(_view.SpriteRenderer, AnimationState.Idle, true, AnimationSpeeds.NORMAL_ANIMATION_SPEED);
+                }
             }
 
             _spriteAnimator.Execute(deltaTime);

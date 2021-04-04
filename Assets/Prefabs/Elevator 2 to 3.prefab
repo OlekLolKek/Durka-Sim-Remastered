@@ -668,7 +668,7 @@ GameObject:
   - component: {fileID: 9134993463084441996}
   - component: {fileID: 9134993463084441998}
   - component: {fileID: 9134993463084441997}
-  - component: {fileID: 7608876107627089138}
+  - component: {fileID: 3579671189889076320}
   m_Layer: 8
   m_Name: Elevator 2 to 3
   m_TagString: Untagged
@@ -712,6 +712,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e16742f9b9f4fd9a7c0d4d7113f20fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _rigidbody2D: {fileID: 3579671189889076320}
   _maxHeight: 22.5
   _minHeight: 16.5
 --- !u!68 &9134993463084441998
@@ -751,18 +752,27 @@ PlatformEffector2D:
   m_UseSideFriction: 0
   m_UseSideBounce: 0
   m_SideArc: 1
---- !u!114 &7608876107627089138
-MonoBehaviour:
+--- !u!50 &3579671189889076320
+Rigidbody2D:
+  serializedVersion: 4
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9134993463084441987}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b71717df1dfd4973a4887ae7eda54f05, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &9134993463090766124
 GameObject:
   m_ObjectHideFlags: 0
