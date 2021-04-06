@@ -9,16 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d555863e199b41c48f4290804be68ae4, type: 3}
-  m_Name: AIConfig
+  m_Script: {fileID: 11500000, guid: b2698dd2f21841ee9bd754f206f1f653, type: 3}
+  m_Name: BulletConfig
   m_EditorClassIdentifier: 
-  _health: 10
-  _damage: 10
-  _speed: 48
-  _rotationSpeed: 2
-  _minSqrDistanceToTarget: 1
-  _visibilityLength: 10
-  _playerHeightOffset: 0.5
-  _layerMask:
-    serializedVersion: 2
-    m_Bits: 1537
+  _throwForce: 10
+  _damage: 5

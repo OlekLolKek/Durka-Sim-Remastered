@@ -5,11 +5,14 @@ using UnityEngine;
 
 namespace DurkaSimRemastered
 {
-    public class PlayerMovement : IExecute
+    public class PlayerController : IExecute, ICleanup
     {
+        private readonly PlayerFallController _playerFallController;
+        private readonly PlayerLifeController _playerLifeController;
+        
         private readonly SpriteAnimator _spriteAnimator;
         private readonly ContactPoller _contactPoller;
-        private readonly LevelObjectView _view;
+        private readonly PlayerView _view;
         private readonly InputModel _inputModel;
 
         private readonly Vector3 _leftScale = new Vector3(-1.0f, 1.0f, 1.0f);
@@ -18,31 +21,28 @@ namespace DurkaSimRemastered
         private const float WALK_SPEED = 150.0f;
         private const float JUMP_FORCE = 400.0f;
         private const float MOVING_THRESHOLD = 0.1f;
-        private const float JUMP_THRESHOLD = 0.1f;
-        private const float FALL_THRESHOLD = -0.1f;
-        private const float FALL_TIME = 0.33f;
-        private const float ELEVATOR_FALL_TIME = 0.33f;
 
         private float _fallTimer;
         private bool _doJump;
         private float _horizontal;
-        private float _vertical;
 
-        public PlayerMovement(LevelObjectView view, SpriteAnimatorConfig playerConfig,
-            InputModel inputModel)
+        public PlayerController(PlayerView view, SpriteAnimatorConfig playerConfig,
+            InputModel inputModel, PlayerLifeModel playerLifeModel)
         {
             _view = view;
             _inputModel = inputModel;
             _spriteAnimator = new SpriteAnimator(playerConfig);
             _contactPoller = new ContactPoller(_view.Collider2D);
+
+            _playerFallController = new PlayerFallController(_contactPoller, _inputModel);
+            _playerLifeController = new PlayerLifeController(_view, playerLifeModel);
         }
         
         public void Execute(float deltaTime)
         {
             _doJump = _inputModel.GetJumpButtonDown;
             _horizontal = _inputModel.Horizontal;
-            _vertical = _inputModel.Vertical;
-            
+
             _contactPoller.Execute(Time.fixedDeltaTime); 
             
             //For some reason the Update method doesn't work correctly with Time.deltaTime, the velocity changes for some reason
@@ -55,8 +55,8 @@ namespace DurkaSimRemastered
             Jump();
 
             Animate(isWalking, deltaTime);
-
-            Fall(deltaTime);
+            
+            _playerFallController.Execute(deltaTime);
         }
 
         private void Walk(bool isWalking)
@@ -86,9 +86,7 @@ namespace DurkaSimRemastered
 
         private void Jump()
         {
-            if (_contactPoller.IsGrounded && _doJump &&
-                Mathf.Abs(_view.Rigidbody2D.velocity.y - 
-                          _contactPoller.GroundVelocity.y) <= JUMP_THRESHOLD)
+            if (_contactPoller.IsGrounded && _doJump)
             {
                 _view.Rigidbody2D.AddForce(Vector3.up * JUMP_FORCE);
             }
@@ -115,35 +113,9 @@ namespace DurkaSimRemastered
             _spriteAnimator.Execute(deltaTime);
         }
 
-        private void Fall(float deltaTime)
+        public void Cleanup()
         {
-            if (Physics2D.GetIgnoreLayerCollision(LayerID.PLAYER_LAYER, LayerID.ELEVATOR_LAYER)
-            || Physics2D.GetIgnoreLayerCollision(LayerID.PLAYER_LAYER, LayerID.PLATFORM_LAYER))
-            {
-                _fallTimer -= deltaTime;
-                if (_fallTimer <= 0.0f)
-                {
-                    Physics2D.IgnoreLayerCollision(LayerID.PLAYER_LAYER, LayerID.ELEVATOR_LAYER, false);
-                    Physics2D.IgnoreLayerCollision(LayerID.PLAYER_LAYER, LayerID.PLATFORM_LAYER, false);
-                }
-            }
-            if (_contactPoller.IsStandingOnPlatform)
-            {
-                if (_vertical < FALL_THRESHOLD)
-                {
-                    _fallTimer = FALL_TIME;
-                    Physics2D.IgnoreLayerCollision(LayerID.PLAYER_LAYER, LayerID.PLATFORM_LAYER);
-                }
-            }
-
-            if (_contactPoller.IsStandingOnElevator)
-            {
-                if (_vertical < FALL_THRESHOLD)
-                {
-                    _fallTimer = ELEVATOR_FALL_TIME;
-                    Physics2D.IgnoreLayerCollision(LayerID.PLAYER_LAYER, LayerID.ELEVATOR_LAYER);
-                }
-            }
+            _playerLifeController.Cleanup();
         }
     }
 }

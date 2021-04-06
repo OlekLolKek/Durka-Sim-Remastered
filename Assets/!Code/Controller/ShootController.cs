@@ -9,7 +9,6 @@ namespace DurkaSimRemastered
     public class ShootController : IExecute
     {
         private const float DELAY = 0.75f;
-        private const float START_SPEED = 10.0f;
 
         private readonly List<Bullet> _bullets = new List<Bullet>();
         private readonly InputModel _inputModel;
@@ -22,7 +21,8 @@ namespace DurkaSimRemastered
 
         public ShootController(List<BulletView> bulletViews, 
             List<BulletParticleSystemView> bulletParticleSystemViews,
-            Transform transform, InputModel inputModel, AmmoModel ammoModel)
+            Transform transform, InputModel inputModel, AmmoModel ammoModel,
+            BulletConfig bulletConfig)
         {
             _transform = transform;
             _inputModel = inputModel;
@@ -30,7 +30,7 @@ namespace DurkaSimRemastered
             {
                 var bulletView = bulletViews[i];
                 var bulletParticleSystemView = bulletParticleSystemViews[i];
-                _bullets.Add(new Bullet(bulletView, bulletParticleSystemView));
+                _bullets.Add(new Bullet(bulletView, bulletParticleSystemView, bulletConfig));
             }
 
             _ammoModel = ammoModel;
@@ -45,7 +45,7 @@ namespace DurkaSimRemastered
                     if (_ammoModel.AmmoCount > 0)
                     {
                         _ammoModel.SetAmmoCount(_ammoModel.AmmoCount - 1);
-                        _bullets[_currentIndex].Throw(_transform.position, _transform.right * START_SPEED);
+                        _bullets[_currentIndex].Throw(_transform.position, _transform.right);
                         _currentIndex++;
                         if (_currentIndex >= _bullets.Count)
                         {

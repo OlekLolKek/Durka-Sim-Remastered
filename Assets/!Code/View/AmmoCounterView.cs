@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 namespace DurkaSimRemastered
 {
-    public class AmmoCounterView : MonoBehaviour, IUIElement
+    public class AmmoCounterView : MonoBehaviour, IUIElement, ICleanup
     {
         [SerializeField] private Text _text;
         [SerializeField] private string _baseText;
@@ -37,7 +37,7 @@ namespace DurkaSimRemastered
             _text.text = $"{_baseText}{newCount}";
         }
 
-        private void OnDestroy()
+        public void Cleanup()
         {
             _ammoModel.OnAmmoCountChanged -= SetAmmoCount;
         }

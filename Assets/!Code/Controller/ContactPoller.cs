@@ -68,6 +68,10 @@ namespace DurkaSimRemastered
                 {
                     GroundVelocity = rigidbody.velocity;
                 }
+                else
+                {
+                    GroundVelocity = Vector2.zero;
+                }
 
                 if (normal.x > COLLISION_THRESHOLD && !hasRigidbody)
                 {

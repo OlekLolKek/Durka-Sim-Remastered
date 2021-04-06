@@ -20,7 +20,7 @@ namespace DurkaSimRemastered
 
             foreach (var seeker in seekers)
             {
-                if (!seeker.TryGetComponent(out LevelObjectView levelObjectView))
+                if (!seeker.TryGetComponent(out EnemyView levelObjectView))
                 {
                     throw new ArgumentNullException($"{seeker} doesn't have a {typeof(LevelObjectView)} component.");
                 }
