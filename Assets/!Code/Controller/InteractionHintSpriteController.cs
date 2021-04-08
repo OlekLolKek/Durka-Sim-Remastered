@@ -7,17 +7,17 @@ namespace DurkaSimRemastered
 {
     public class InteractionHintSpriteController : IExecute
     {
-        private readonly PlayerInteractionModel _playerInteractionModel;
+        private readonly PlayerDataModel _playerDataModel;
         private readonly SpriteAnimator _spriteAnimator;
         private readonly LevelObjectView _view;
         private readonly Transform _player;
         private readonly Vector3 _offset = new Vector3(0.0f, 1.5f, 0.0f);
 
-        public InteractionHintSpriteController(PlayerInteractionModel playerInteractionModel, 
+        public InteractionHintSpriteController(PlayerDataModel playerDataModel, 
             SpriteAnimatorConfig interactionHintSpriteAnimatorConfig,
             LevelObjectView view, LevelObjectView playerView)
         {
-            _playerInteractionModel = playerInteractionModel;
+            _playerDataModel = playerDataModel;
             _view = view;
 
             _spriteAnimator = new SpriteAnimator(interactionHintSpriteAnimatorConfig);
@@ -38,7 +38,7 @@ namespace DurkaSimRemastered
 
         private void SpriteVisibility(float deltaTime)
         {
-            if (_playerInteractionModel.PlayerIntersects)
+            if (_playerDataModel.PlayerIntersects)
             {
                 _view.gameObject.SetActive(true);
                 _spriteAnimator.Execute(deltaTime);

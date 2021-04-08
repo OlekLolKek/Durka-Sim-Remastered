@@ -21,8 +21,7 @@ namespace DurkaSimRemastered
         [SerializeField] private Camera _camera;
         [SerializeField] private PlayerView _playerView;
         [SerializeField] private LevelObjectView _interactionButtonHintView;
-        [SerializeField] private Transform _barrel;
-        [SerializeField] private Transform _muzzle;
+        [SerializeField] private Transform _bulletSource;
         [SerializeField] private Transform _background;
         [SerializeField] private List<BulletView> _bullets;
         [SerializeField] private List<BulletParticleSystemView> _bulletParticles;
@@ -47,26 +46,21 @@ namespace DurkaSimRemastered
             var bulletConfig = Resources.Load<BulletConfig>(_bulletConfigPath);
             
             var inputModel = new InputModel();
-            var playerInteractionModel = new PlayerInteractionModel();
             var ammoModel = new AmmoModel();
             var playerLifeModel = new PlayerLifeModel(_playerHealth);
+            var playerDataModel = new PlayerDataModel();
+            var doorUseModel = new DoorUseModel();
             
             _controllers.AddController(
                 new InputController(inputModel));
             
             _controllers.AddController(
                 new PlayerController(_playerView, playerConfig, inputModel,
-                    playerLifeModel));
+                    playerLifeModel, playerDataModel, _bullets, _bulletParticles, 
+                    _bulletSource, ammoModel, bulletConfig, _camera, doorUseModel));
             
             _controllers.AddController(
                 new CameraController(_camera.transform, _playerView.transform));
-            
-            _controllers.AddController(
-                new BarrelRotation(_barrel, _camera, _playerView.transform));
-            
-            _controllers.AddController(
-                new ShootController(_bullets, _bulletParticles, _muzzle, 
-                    inputModel, ammoModel, bulletConfig));
             
             _controllers.AddController(
                 new CoinsController(_playerView, _coins, coinConfig,
@@ -82,16 +76,19 @@ namespace DurkaSimRemastered
                new EnemiesController(aiConfig, _playerView.transform, robotConfig));
             
             _controllers.AddController(
-                new QuestController(leverConfig, playerInteractionModel,
+                new QuestController(leverConfig, playerDataModel,
                     inputModel));
             
             _controllers.AddController(
-                new InteractionHintSpriteController(playerInteractionModel, 
+                new InteractionHintSpriteController(playerDataModel, 
                     interactionButtonHintConfig, _interactionButtonHintView,
                     _playerView));
             
             _controllers.AddController(
-                new UIController(playerLifeModel, ammoModel));
+                new UIController(playerLifeModel, ammoModel, doorUseModel));
+            
+            _controllers.AddController(
+                new DoorController(playerDataModel, inputModel, doorUseModel));
             
             var levelCompleteController = new LevelCompleteController(_playerView, _deathZones, _winZones);
 

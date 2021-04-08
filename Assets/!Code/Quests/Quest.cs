@@ -11,7 +11,7 @@ namespace Quests
     {
         #region Fields
 
-        private readonly PlayerInteractionModel _playerInteractionModel;
+        private readonly PlayerDataModel _playerDataModel;
         private readonly QuestObjectView _view;
         private readonly InputModel _inputModel;
         private readonly IQuestModel _model;
@@ -25,13 +25,13 @@ namespace Quests
 
         #endregion
 
-        public Quest(QuestObjectView view, IQuestModel model, 
-            PlayerInteractionModel playerInteractionModel,
+        public Quest(QuestObjectView view, IQuestModel model,
+            PlayerDataModel playerInteractionModel,
             InputModel inputModel)
         {
             _view = view != null ? view : throw new ArgumentNullException(nameof(view));
             _model = model != null ? model : throw new ArgumentNullException(nameof(model));
-            _playerInteractionModel = playerInteractionModel != null
+            _playerDataModel = playerInteractionModel != null
                 ? playerInteractionModel
                 : throw new ArgumentNullException(nameof(playerInteractionModel));
             _inputModel = inputModel;
@@ -41,29 +41,26 @@ namespace Quests
 
         private void OnTriggerEnter(Collider2D other)
         {
-            _playerInteractionModel.PlayerIntersects = true;
+            _playerDataModel.PlayerIntersects = true;
             IsPlayerNear = true;
             _otherCollider = other;
         }
 
         private void OnTriggerExit(Collider2D other)
         {
-            _playerInteractionModel.PlayerIntersects = false;
+            _playerDataModel.PlayerIntersects = false;
             IsPlayerNear = false;
             _otherCollider = null;
         }
 
         public void Execute(float deltaTime)
         {
-            if (IsPlayerNear)
+            if (_inputModel.GetInteractButtonDown)
             {
-                if (_inputModel.GetInteractButtonDown)
+                var completed = _model.TryComplete(_otherCollider.gameObject);
+                if (completed)
                 {
-                    var completed = _model.TryComplete(_otherCollider.gameObject);
-                    if (completed)
-                    {
-                        Complete();
-                    }
+                    Complete();
                 }
             }
         }
@@ -71,7 +68,7 @@ namespace Quests
         private void Complete()
         {
             if (!_active) return;
-            _playerInteractionModel.PlayerIntersects = false;
+            _playerDataModel.PlayerIntersects = false;
             _active = false;
             IsCompleted = true;
             _view.OnTriggerEnter -= OnTriggerEnter;
@@ -98,7 +95,7 @@ namespace Quests
             _view.OnTriggerExit += OnTriggerExit;
             _view.ProcessActivate();
         }
-        
+
         public void Dispose()
         {
             _view.OnTriggerEnter -= OnTriggerEnter;

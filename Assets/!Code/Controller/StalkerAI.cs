@@ -29,13 +29,12 @@ namespace DurkaSimRemastered
         private readonly Seeker _seeker;
 
         private const float ATTACK_SQR_DISTANCE = 1.75f;
+        private const float MOVING_SQR_VELOCITY = 0.5f;
         private const float RECALCULATE_PATH_FREQUENCY = 0.5f;
         private const float ATTACK_FREQUENCY = 1.0f;
         private const float SPRITE_ROTATION_OFFSET = -90.0f;
-        private const float IDLE_DIRECTION_MAGNITUDE_THRESHOLD = 1.0f;
         private const float ANIMATION_SPEED = 5.0f;
         
-        private readonly int _maxHealth;
         private int _currentHealth;
 
         private bool _isReadyToAttack;
@@ -58,9 +57,8 @@ namespace DurkaSimRemastered
 
             _model = new StalkerAIModel(_config);
             _rotationSpeed = _config.RotationSpeed;
-
-            _maxHealth = _config.Health;
-            _currentHealth = _maxHealth;
+            
+            _currentHealth = _config.Health;
         }
 
         #region Methods
@@ -113,7 +111,7 @@ namespace DurkaSimRemastered
             _view.Rigidbody2D.velocity = newVelocity;
             
             Rotate(direction);
-            Animate(direction);
+            Animate();
         }
 
         private void ProcessTimings(float deltaTime)
@@ -148,7 +146,7 @@ namespace DurkaSimRemastered
             _view.transform.rotation = Quaternion.Lerp(_view.transform.rotation, rotation, _rotationSpeed * Time.fixedDeltaTime);
         }
 
-        private void Animate(Vector3 velocity)
+        private void Animate()
         {
             switch (_state)
             {
@@ -205,6 +203,15 @@ namespace DurkaSimRemastered
                     
                     return true;
                 }
+                else if (_view.Rigidbody2D.velocity.sqrMagnitude >= MOVING_SQR_VELOCITY)
+                {
+                    _state = EntityStates.Moving;
+                }
+                else
+                {
+                    _state = EntityStates.Idle;
+                }
+                
             }
 
             return false;

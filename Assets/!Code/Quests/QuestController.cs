@@ -31,12 +31,12 @@ namespace Quests
         private List<IQuestStory> _questStories;
         private Quest[] _singleQuests;
 
-        private readonly PlayerInteractionModel _playerInteractionModel;
+        private readonly PlayerDataModel _playerDataModel;
         private readonly SpriteAnimator _bridgeQuestViewAnimator;
         private readonly InputModel _inputModel;
 
         public QuestController(SpriteAnimatorConfig leverConfig, 
-            PlayerInteractionModel playerInteractionModel,
+            PlayerDataModel playerDataModel,
             InputModel inputModel)
         {
             var questSceneConfig = Object.FindObjectOfType<QuestsSceneConfig>();
@@ -44,7 +44,7 @@ namespace Quests
             _questStoryConfigs = questSceneConfig.QuestStoryConfigs;
             _questObjects = questSceneConfig.QuestObjects;
             _bridgeQuestViewAnimator = new SpriteAnimator(leverConfig);
-            _playerInteractionModel = playerInteractionModel;
+            _playerDataModel = playerDataModel;
             _inputModel = inputModel;
         }
         
@@ -53,7 +53,7 @@ namespace Quests
             _singleQuests = new Quest[_singleQuestViews.Length];
             for (int i = 0; i < _singleQuests.Length; i++)
             {
-                _singleQuests[i] = new Quest(_singleQuestViews[i], new SwitchQuestModel(), _playerInteractionModel, _inputModel);
+                _singleQuests[i] = new Quest(_singleQuestViews[i], new SwitchQuestModel(), _playerDataModel, _inputModel);
                 _singleQuests[i].Reset();
                 if (_singleQuestViews[i] is BridgeQuestView bridgeQuestView)
                 {
@@ -126,7 +126,7 @@ namespace Quests
             if (_questFactories.TryGetValue(config.QuestType, out var factory))
             {
                 var questModel = factory.Invoke();
-                return new Quest(questView, questModel, _playerInteractionModel, _inputModel);
+                return new Quest(questView, questModel, _playerDataModel, _inputModel);
             }
 
             Debug.LogWarning($"{this} :: {nameof(Initialize)} : Can't create model for quest {questId.ToString()}");

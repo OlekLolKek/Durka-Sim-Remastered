@@ -9,17 +9,20 @@ namespace DurkaSimRemastered
     {
         private readonly ContactPoller _contactPoller;
         private readonly InputModel _inputModel;
-        
+        private readonly PlayerDataModel _playerDataModel;
+
         private float _fallTimer;
         private float _vertical;
         
         private const float FALL_THRESHOLD = -0.1f;
         private const float FALL_TIME = 0.33f;
 
-        public PlayerFallController(ContactPoller contactPoller, InputModel inputModel)
+        public PlayerFallController(ContactPoller contactPoller, InputModel inputModel,
+            PlayerDataModel playerDataModel)
         {
             _contactPoller = contactPoller;
             _inputModel = inputModel;
+            _playerDataModel = playerDataModel;
         }
         
         public void Execute(float deltaTime)
@@ -41,7 +44,7 @@ namespace DurkaSimRemastered
                     Physics2D.IgnoreLayerCollision(LayerID.PLAYER_LAYER, LayerID.PLATFORM_LAYER, false);
                 }
             }
-            if (_contactPoller.IsStandingOnPlatform)
+            if (_playerDataModel.IsStandingOnPlatform)
             {
                 if (_vertical < FALL_THRESHOLD)
                 {
@@ -50,7 +53,7 @@ namespace DurkaSimRemastered
                 }
             }
 
-            if (_contactPoller.IsStandingOnElevator)
+            if (_playerDataModel.IsStandingOnElevator)
             {
                 if (_vertical < FALL_THRESHOLD)
                 {
