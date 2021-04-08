@@ -17,12 +17,12 @@ namespace DurkaSimRemastered
         public Action<Collider2D> OnTriggerEnter { get; set; }
         public Action<Collider2D> OnTriggerExit { get; set; }
 
-        public void OnTriggerEnter2D(Collider2D other)
+        private void OnTriggerEnter2D(Collider2D other)
         {
             OnTriggerEnter?.Invoke(other);
         }
 
-        public void OnTriggerExit2D(Collider2D other)
+        private void OnTriggerExit2D(Collider2D other)
         {
             OnTriggerExit?.Invoke(other);
         }

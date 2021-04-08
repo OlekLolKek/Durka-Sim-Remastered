@@ -70,7 +70,6 @@ namespace DurkaSimRemastered
         private void Activate()
         {
             OnDoorActivated.Invoke(_pairDoorView);
-            _pairDoorView.OnTriggerEnter2D(_otherCollider);
             _doorView.AudioSource.Play();
         }
 

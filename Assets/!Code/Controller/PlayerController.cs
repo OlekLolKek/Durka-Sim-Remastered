@@ -44,10 +44,17 @@ namespace DurkaSimRemastered
             _spriteAnimator = new SpriteAnimator(playerConfig);
             _contactPoller = new ContactPoller(_playerView.Collider2D, _playerDataModel);
 
-            _playerTeleportController = new PlayerTeleportController(doorUseModel, _playerView);
-            _playerFallController = new PlayerFallController(_contactPoller, _inputModel, _playerDataModel);
-            _playerLifeController = new PlayerLifeController(_playerView, playerLifeModel);
-            _shootController = new ShootController(bullets, bulletParticles, bulletSource,
+            _playerTeleportController = 
+                new PlayerTeleportController(doorUseModel, _playerView, playerDataModel);
+            
+            _playerFallController = 
+                new PlayerFallController(_contactPoller, _inputModel, _playerDataModel);
+            
+            _playerLifeController = 
+                new PlayerLifeController(_playerView, playerLifeModel);
+            
+            _shootController = 
+                new ShootController(bullets, bulletParticles, bulletSource,
                 inputModel, ammoModel, bulletConfig, playerDataModel,
                 camera, _playerView, _spriteAnimator);
         }

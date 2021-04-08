@@ -40,10 +40,10 @@ namespace DurkaSimRemastered
                     IdleDown(deltaTime);
                     break;
                 case ElevatorState.GoingDown:
-                    GoDown(deltaTime);
+                    GoDown();
                     break;
                 case ElevatorState.GoingUp:
-                    GoUp(deltaTime);
+                    GoUp();
                     break;
                 case ElevatorState.None:
                     throw new Exception("Seems like the elevator is broken.");
@@ -70,12 +70,12 @@ namespace DurkaSimRemastered
             }
         }
         
-        private void GoUp(float deltaTime)
+        private void GoUp()
         {
             if (_view.transform.position.y >= _maxHeight)
             {
                 _view.Rigidbody2D.velocity = Vector2.zero;
-
+                _view.transform.position = _view.transform.position.Change(y: _maxHeight);
                 _state = ElevatorState.IdleUp;
                 return;
             }
@@ -84,11 +84,12 @@ namespace DurkaSimRemastered
             _view.Rigidbody2D.velocity = newVelocity;
         }
 
-        private void GoDown(float deltaTime)
+        private void GoDown()
         {
             if (_view.transform.position.y <= _minHeight)
             {
                 _view.Rigidbody2D.velocity = Vector2.zero;
+                _view.transform.position = _view.transform.position.Change(y: _minHeight);
                 _state = ElevatorState.IdleDown;
                 return;
             }

@@ -13,11 +13,14 @@ namespace DurkaSimRemastered
         private IDisposable _teleportCoroutine;
         
         private readonly DoorUseModel _doorUseModel;
+        private readonly PlayerDataModel _playerDataModel;
         private readonly Transform _playerTransform;
 
-        public PlayerTeleportController(DoorUseModel doorUseModel, PlayerView playerView)
+        public PlayerTeleportController(DoorUseModel doorUseModel, PlayerView playerView,
+            PlayerDataModel playerDataModel)
         {
             _doorUseModel = doorUseModel;
+            _playerDataModel = playerDataModel;
             _doorUseModel.OnDoorActivated += Teleport;
 
             _playerTransform = playerView.transform;
@@ -32,6 +35,8 @@ namespace DurkaSimRemastered
         {
             yield return new WaitForSeconds(TeleportTimings.FADE_IN_DURATION);
             _playerTransform.position = pairDoorView.transform.position;
+            yield return new WaitForSeconds(TeleportTimings.FAKE_TRIGGER_ENTER_DELAY);
+            _playerDataModel.PlayerIntersects = true;
         }
 
         public void Cleanup()
