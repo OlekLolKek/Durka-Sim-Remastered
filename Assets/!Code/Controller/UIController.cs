@@ -31,7 +31,7 @@ namespace DurkaSimRemastered
         {
             _playerHealthView.Initialize(_playerLifeModel);
             _ammoCounterView.Initialize(_ammoModel);
-            _faderView.Initialize(_doorUseModel);
+            _faderView.Initialize(_doorUseModel, _playerLifeModel);
         }
 
         public void Cleanup()

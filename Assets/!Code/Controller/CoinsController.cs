@@ -21,7 +21,7 @@ namespace DurkaSimRemastered
             SpriteAnimatorConfig coinConfig, AmmoModel ammoModel)
         {
             _characterView = characterView;
-            _spriteAnimator = new SpriteAnimator(coinConfig);;
+            _spriteAnimator = new SpriteAnimator(coinConfig);
             _coinViews = coinViews;
             _ammoModel = ammoModel;
             _characterView.OnTriggerEnter += OnLevelObjectContact;

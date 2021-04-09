@@ -1,7 +1,9 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using DurkaSimRemastered.Interface;
 using Model;
+using UniRx;
 using UnityEngine;
 
 
@@ -9,10 +11,11 @@ namespace DurkaSimRemastered
 {
     public sealed class LevelCompleteController : ICleanup
     {
+        private IDisposable _playerRespawnCoroutine;
         private readonly Vector3 _startPosition;
         private readonly LevelObjectView _characterView;
         private readonly List<LevelObjectView> _deathZones;
-        private List<LevelObjectView> _winZones;
+        private readonly List<LevelObjectView> _winZones;
         private readonly PlayerLifeModel _playerLifeModel;
 
         private const int DEATH_PIT_DAMAGE = 9999;
@@ -44,7 +47,13 @@ namespace DurkaSimRemastered
 
         private void OnPlayerDied()
         {
-            
+            _playerRespawnCoroutine = Respawn().ToObservable().Subscribe();
+        }
+
+        private IEnumerator Respawn()
+        {
+            yield return new WaitForSeconds(DeathTimings.FADE_IN_TIME);
+            _characterView.transform.position = _startPosition;
         }
         
         public void Cleanup()
@@ -53,8 +62,8 @@ namespace DurkaSimRemastered
             {
                 deathZone.OnTriggerEnter -= OnTriggerEnter;
             }
-            _playerLifeModel.OnPlayerDied -= OnPlayerDied;
             
+            _playerLifeModel.OnPlayerDied -= OnPlayerDied;
         }
     }
 }

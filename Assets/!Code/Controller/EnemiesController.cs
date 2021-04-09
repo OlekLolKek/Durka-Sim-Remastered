@@ -12,7 +12,7 @@ namespace DurkaSimRemastered
     public class EnemiesController : IInitialize, IExecute, IFixedExecute, ICleanup
     {
         private readonly List<StalkerAI> _crawlers = new List<StalkerAI>();
-        private readonly JamBossAi _jamBoss;
+        private readonly JamBossAI _jamBoss;
         private readonly SpriteAnimatorConfig _robotConfig;
 
         public EnemiesController(AIConfig robotConfig, Transform playerTransform, SpriteAnimatorConfig robotAnimationConfig,
@@ -32,7 +32,7 @@ namespace DurkaSimRemastered
 
             var jamView = Object.FindObjectOfType<JamBossView>();
 
-            _jamBoss = new JamBossAi(jamView, jamBossConfig, jamBossAnimationConfig);
+            _jamBoss = new JamBossAI(jamView, jamBossConfig, jamBossAnimationConfig);
         }
 
         public void Initialize()

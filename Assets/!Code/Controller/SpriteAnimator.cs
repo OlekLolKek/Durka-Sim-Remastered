@@ -69,6 +69,7 @@ namespace DurkaSimRemastered
                     Loop = loop,
                     Speed = speed
                 });
+                Debug.Log(_activeAnimations.Count);
             }
         }
         

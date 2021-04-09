@@ -58,17 +58,17 @@ namespace DurkaSimRemastered
             _controllers.AddController(
                 new InputController(inputModel));
             
-            _controllers.AddController(
-                new PlayerController(_playerView, playerConfig, inputModel,
-                    playerLifeModel, playerDataModel, _bullets, _bulletParticles, 
-                    _bulletSource, ammoModel, bulletConfig, _camera, doorUseModel));
+             _controllers.AddController(
+                 new PlayerController(_playerView, playerConfig, inputModel,
+                     playerLifeModel, playerDataModel, _bullets, _bulletParticles, 
+                     _bulletSource, ammoModel, bulletConfig, _camera, doorUseModel));
             
             _controllers.AddController(
                 new CameraController(_camera.transform, _playerView.transform));
             
-            _controllers.AddController(
-                new CoinsController(_playerView, _coins, coinConfig,
-                    ammoModel));
+             _controllers.AddController(
+                 new CoinsController(_playerView, _coins, coinConfig,
+                     ammoModel));
             
             _controllers.AddController(
                 new ParallaxController(_camera.transform, _background));
@@ -85,10 +85,10 @@ namespace DurkaSimRemastered
                 new QuestController(leverConfig, playerDataModel,
                     inputModel));
             
-            _controllers.AddController(
-                new InteractionHintSpriteController(playerDataModel, 
-                    interactionButtonHintConfig, _interactionButtonHintView,
-                    _playerView));
+             _controllers.AddController(
+                 new InteractionHintSpriteController(playerDataModel, 
+                     interactionButtonHintConfig, _interactionButtonHintView,
+                     _playerView));
             
             _controllers.AddController(
                 new UIController(playerLifeModel, ammoModel, doorUseModel));

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: AIConfig
   m_EditorClassIdentifier: 
   _health: 10
-  _damage: 10
+  _damage: 20
   _speed: 48
   _rotationSpeed: 2
   _minSqrDistanceToTarget: 1

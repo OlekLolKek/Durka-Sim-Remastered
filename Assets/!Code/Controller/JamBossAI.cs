@@ -1,17 +1,17 @@
 using DurkaSimRemastered.Interface;
+using UnityEngine;
 
 
 namespace DurkaSimRemastered
 {
-    public class JamBossAi : IInitialize, IExecute
+    public class JamBossAI : IInitialize, IExecute
     {
         private readonly SpriteAnimator _spriteAnimator;
         private readonly EnemyView _view;
 
         private float _currentHealth;
-        private bool _isDead;
         
-        public JamBossAi(EnemyView view, AIConfig config,
+        public JamBossAI(EnemyView view, AIConfig config,
             SpriteAnimatorConfig animatorConfig)
         {
             _spriteAnimator = new SpriteAnimator(animatorConfig);
@@ -25,13 +25,11 @@ namespace DurkaSimRemastered
         public void Initialize()
         {
             _spriteAnimator.StartAnimation(_view.SpriteRenderer, AnimationState.Idle, 
-                true,AnimationSpeeds.NORMAL_ANIMATION_SPEED);
+                true, AnimationSpeeds.NORMAL_ANIMATION_SPEED);
         }
 
         public void Execute(float deltaTime)
         {
-            if (_isDead) return;
-            
             _spriteAnimator.Execute(deltaTime);
         }
 
@@ -51,7 +49,7 @@ namespace DurkaSimRemastered
             _view.DeathParticleSystem.transform.SetParent(null);
             _view.gameObject.SetActive(false);
             _view.DeathParticleSystem.Play();
-            _isDead = true;
+            _spriteAnimator.StopAnimation(_view.SpriteRenderer);
         }
     }
 }

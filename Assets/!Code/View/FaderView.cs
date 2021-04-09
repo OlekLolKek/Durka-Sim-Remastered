@@ -16,14 +16,20 @@ namespace DurkaSimRemastered
         [SerializeField] private Color _blackColor;
         [SerializeField] private Color _transparentColor;
 
+        private PlayerLifeModel _playerLifeModel;
         private DoorUseModel _doorUseModel;
         private IDisposable _fadeCoroutine;
+        private IDisposable _deathCoroutine;
 
-        public void Initialize(DoorUseModel doorUseModel)
+        public void Initialize(DoorUseModel doorUseModel, PlayerLifeModel playerLifeModel)
         {
             _doorUseModel = doorUseModel;
             _doorUseModel.OnDoorActivated += StartFade;
             _image.color = _blackColor;
+
+            _playerLifeModel = playerLifeModel;
+            _playerLifeModel.OnPlayerDied += OnPlayerDied;
+            
             Hide();
         }
 
@@ -36,6 +42,18 @@ namespace DurkaSimRemastered
         {
             Show();
             yield return new WaitForSeconds(TeleportTimings.PAUSE_DURATION);
+            Hide();
+        }
+
+        private void OnPlayerDied()
+        {
+            _deathCoroutine = DeathFade().ToObservable().Subscribe();
+        }
+
+        private IEnumerator DeathFade()
+        {
+            Show();
+            yield return new WaitForSeconds(DeathTimings.PAUSE_TIME);
             Hide();
         }
 
@@ -52,7 +70,9 @@ namespace DurkaSimRemastered
         public void Cleanup()
         {
             _doorUseModel.OnDoorActivated -= StartFade;
+            _playerLifeModel.OnPlayerDied -= OnPlayerDied;
             _fadeCoroutine?.Dispose();
+            _deathCoroutine?.Dispose();
         }
     }
 }
