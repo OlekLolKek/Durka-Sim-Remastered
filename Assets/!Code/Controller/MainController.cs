@@ -14,8 +14,10 @@ namespace DurkaSimRemastered
         [SerializeField] private string _robotConfigPath = "Animation/RobotAnimationConfig";
         [SerializeField] private string _leverConfigPath = "Animation/LeverAnimationConfig";
         [SerializeField] private string _interactionButtonHintConfigPath = "Animation/InteractionButtonAnimationConfig";
+        [SerializeField] private string _bossJamConfigPath = "Animation/BossJamAnimationConfig";
         [SerializeField] private string _bulletConfigPath = "Bullet";
-        [SerializeField] private string _aiConfigPath = "AIConfig";
+        [SerializeField] private string _robotAiConfigPath = "AIConfig";
+        [SerializeField] private string _bossJamAIConfigPath = "BossJamAiConfig";
         [Space]
         [SerializeField] private int _playerHealth = 100;
         [SerializeField] private Camera _camera;
@@ -39,10 +41,12 @@ namespace DurkaSimRemastered
             var interactionButtonHintConfig = Resources.Load<SpriteAnimatorConfig>(_interactionButtonHintConfigPath);
             var playerConfig = Resources.Load<SpriteAnimatorConfig>(_playerConfigPath);
             var coinConfig = Resources.Load<SpriteAnimatorConfig>(_coinConfigPath);
-            var robotConfig = Resources.Load<SpriteAnimatorConfig>(_robotConfigPath);
+            var robotAnimationConfig = Resources.Load<SpriteAnimatorConfig>(_robotConfigPath);
             var leverConfig = Resources.Load<SpriteAnimatorConfig>(_leverConfigPath);
+            var jamBossAnimationConfig = Resources.Load<SpriteAnimatorConfig>(_bossJamConfigPath);
 
-            var aiConfig = Resources.Load<AIConfig>(_aiConfigPath);
+            var robotAiConfig = Resources.Load<AIConfig>(_robotAiConfigPath);
+            var jamBossAiConfig = Resources.Load<AIConfig>(_bossJamAIConfigPath);
             var bulletConfig = Resources.Load<BulletConfig>(_bulletConfigPath);
             
             var inputModel = new InputModel();
@@ -73,7 +77,9 @@ namespace DurkaSimRemastered
                 new ElevatorController(_elevatorViews));
             
             _controllers.AddController(
-               new EnemiesController(aiConfig, _playerView.transform, robotConfig));
+               new EnemiesController(robotAiConfig, _playerView.transform, 
+                   robotAnimationConfig, jamBossAnimationConfig, 
+                   jamBossAiConfig));
             
             _controllers.AddController(
                 new QuestController(leverConfig, playerDataModel,
@@ -90,7 +96,9 @@ namespace DurkaSimRemastered
             _controllers.AddController(
                 new DoorController(playerDataModel, inputModel, doorUseModel));
             
-            var levelCompleteController = new LevelCompleteController(_playerView, _deathZones, _winZones);
+            _controllers.AddController(
+                new LevelCompleteController(_playerView, _deathZones, 
+                    _winZones, playerLifeModel));
 
             _controllers.Initialize();
         }

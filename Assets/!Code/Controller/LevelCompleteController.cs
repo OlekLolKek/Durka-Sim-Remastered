@@ -1,41 +1,60 @@
 using System;
 using System.Collections.Generic;
+using DurkaSimRemastered.Interface;
+using Model;
 using UnityEngine;
 
 
 namespace DurkaSimRemastered
 {
-    public sealed class LevelCompleteController : IDisposable
+    public sealed class LevelCompleteController : ICleanup
     {
         private readonly Vector3 _startPosition;
         private readonly LevelObjectView _characterView;
         private readonly List<LevelObjectView> _deathZones;
         private List<LevelObjectView> _winZones;
+        private readonly PlayerLifeModel _playerLifeModel;
+
+        private const int DEATH_PIT_DAMAGE = 9999;
 
         public LevelCompleteController(LevelObjectView characterView, List<LevelObjectView> deathZones, 
-            List<LevelObjectView> winZones)
+            List<LevelObjectView> winZones, PlayerLifeModel playerLifeModel)
         {
             _startPosition = characterView.transform.position;
-            characterView.OnTriggerEnter += OnLevelObjectContact;
             
             _characterView = characterView;
             _deathZones = deathZones;
             _winZones = winZones;
-        }
-
-        private void OnLevelObjectContact(Collider2D collider2D)
-        {
-            var contactView = collider2D.gameObject.GetComponent<LevelObjectView>();
-
-            if (_deathZones.Contains(contactView))
+            _playerLifeModel = playerLifeModel;
+            _playerLifeModel.OnPlayerDied += OnPlayerDied;
+            
+            foreach (var deathZone in _deathZones)
             {
-                _characterView.transform.position = _startPosition;
+                deathZone.OnTriggerEnter += OnTriggerEnter;
             }
         }
-        
-        public void Dispose()
+
+        private void OnTriggerEnter(Collider2D other)
         {
-            _characterView.OnTriggerEnter -= OnLevelObjectContact;
+            if (other.TryGetComponent(out PlayerView playerView))
+            {
+                playerView.Damage(DEATH_PIT_DAMAGE);
+            }
+        }
+
+        private void OnPlayerDied()
+        {
+            
+        }
+        
+        public void Cleanup()
+        {
+            foreach (var deathZone in _deathZones)
+            {
+                deathZone.OnTriggerEnter -= OnTriggerEnter;
+            }
+            _playerLifeModel.OnPlayerDied -= OnPlayerDied;
+            
         }
     }
 }

@@ -8,7 +8,7 @@ using UnityEngine;
 namespace DurkaSimRemastered
 {
     //TODO: refactor this class, divide by several smaller classes
-    public class StalkerAI : IInitialize, IExecute, IFixedExecute
+    public class StalkerAI : IExecute, IFixedExecute, ICleanup
     {
         private List<RaycastHit2D> _raycastResults;
 
@@ -62,11 +62,6 @@ namespace DurkaSimRemastered
         }
 
         #region Methods
-
-        public void Initialize()
-        {
-            RecalculatePath();
-        }
 
         public void Execute(float deltaTime)
         {
@@ -247,6 +242,11 @@ namespace DurkaSimRemastered
         {
             if (path.error) return;
             _model.UpdatePath(path);
+        }
+        
+        public void Cleanup()
+        {
+            _view.OnDamageReceived -= OnDamageReceived;
         }
 
         #endregion

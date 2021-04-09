@@ -23,12 +23,14 @@ namespace Model
             OnPlayerHealthChanged.Invoke(CurrentHealth);
             if (CurrentHealth <= 0)
             {
+                CurrentHealth = 0;
                 Die();
             }
         }
 
         private void Die()
         {
+            IsDead = true;
             OnPlayerDied.Invoke();
         }
     }

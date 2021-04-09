@@ -9,12 +9,14 @@ using Object = UnityEngine.Object;
 
 namespace DurkaSimRemastered
 {
-    public class EnemiesController : IExecute, IFixedExecute
+    public class EnemiesController : IInitialize, IExecute, IFixedExecute, ICleanup
     {
         private readonly List<StalkerAI> _crawlers = new List<StalkerAI>();
+        private readonly JamBossAi _jamBoss;
         private readonly SpriteAnimatorConfig _robotConfig;
 
-        public EnemiesController(AIConfig aiConfig, Transform playerTransform, SpriteAnimatorConfig robotConfig)
+        public EnemiesController(AIConfig robotConfig, Transform playerTransform, SpriteAnimatorConfig robotAnimationConfig,
+            SpriteAnimatorConfig jamBossAnimationConfig, AIConfig jamBossConfig)
         {
             var seekers = Object.FindObjectsOfType<Seeker>().ToList();
 
@@ -25,10 +27,19 @@ namespace DurkaSimRemastered
                     throw new ArgumentNullException($"{seeker} doesn't have a {typeof(LevelObjectView)} component.");
                 }
                 
-                _crawlers.Add(new StalkerAI(levelObjectView, aiConfig, seeker, playerTransform, robotConfig));
+                _crawlers.Add(new StalkerAI(levelObjectView, robotConfig, seeker, playerTransform, robotAnimationConfig));
             }
+
+            var jamView = Object.FindObjectOfType<JamBossView>();
+
+            _jamBoss = new JamBossAi(jamView, jamBossConfig, jamBossAnimationConfig);
         }
-        
+
+        public void Initialize()
+        {
+            _jamBoss.Initialize();
+        }
+
         public void Execute(float deltaTime)
         {
             foreach (var crawler in _crawlers)
@@ -42,6 +53,14 @@ namespace DurkaSimRemastered
             foreach (var crawler in _crawlers)
             {
                 crawler.FixedExecute();
+            }
+        }
+
+        public void Cleanup()
+        {
+            foreach (var crawler in _crawlers)
+            {
+                crawler.Cleanup();
             }
         }
     }
