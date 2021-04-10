@@ -62,9 +62,19 @@ namespace DurkaSimRemastered
             _image.DOColor(_blackColor, TeleportTimings.FADE_IN_DURATION);
         }
 
+        public void ShowInstant()
+        {
+            _image.color = _blackColor;
+        }
+
         public void Hide()
         {
             _image.DOColor(_transparentColor, TeleportTimings.FADE_OUT_DURATION);
+        }
+
+        public void HideInstant()
+        {
+            _image.color = _transparentColor;
         }
 
         public void Cleanup()

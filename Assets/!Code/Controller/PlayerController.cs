@@ -17,6 +17,7 @@ namespace DurkaSimRemastered
         private readonly SpriteAnimator _spriteAnimator;
         private readonly ContactPoller _contactPoller;
         private readonly InputModel _inputModel;
+        private readonly PlayerLifeModel _playerLifeModel;
         private readonly PlayerView _playerView;
 
         private readonly Vector3 _leftScale = new Vector3(-1.0f, 1.0f, 1.0f);
@@ -41,6 +42,7 @@ namespace DurkaSimRemastered
             _playerDataModel = playerDataModel;
             _playerView = playerView;
             _inputModel = inputModel;
+            _playerLifeModel = playerLifeModel;
             _spriteAnimator = new SpriteAnimator(playerConfig);
             _contactPoller = new ContactPoller(_playerView.Collider2D, _playerDataModel);
 
@@ -69,8 +71,14 @@ namespace DurkaSimRemastered
             //For some reason the Update method doesn't work correctly with Time.deltaTime, the velocity changes for some reason
             //Time.fixedDeltaTime works just fine, even though it shouldn't
 
+            if (_playerLifeModel.IsDead)
+            {
+                Walk(false);
+                return;
+            }
+            
             var isWalking = Mathf.Abs(_horizontal) > MOVING_THRESHOLD;
-
+            
             Walk(isWalking);
 
             Jump();

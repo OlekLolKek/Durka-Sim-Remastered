@@ -41,16 +41,22 @@ namespace Quests
 
         private void OnTriggerEnter(Collider2D other)
         {
-            _playerDataModel.PlayerIntersects = true;
-            IsPlayerNear = true;
-            _otherCollider = other;
+            if (other.gameObject.TryGetComponent(out PlayerView _))
+            {
+                _playerDataModel.PlayerIntersects = true;
+                IsPlayerNear = true;
+                _otherCollider = other;
+            }
         }
 
         private void OnTriggerExit(Collider2D other)
         {
-            _playerDataModel.PlayerIntersects = false;
-            IsPlayerNear = false;
-            _otherCollider = null;
+            if (other.gameObject.TryGetComponent(out PlayerView _))
+            {
+                _playerDataModel.PlayerIntersects = false;
+                IsPlayerNear = false;
+                _otherCollider = null;
+            }
         }
 
         public void Execute(float deltaTime)

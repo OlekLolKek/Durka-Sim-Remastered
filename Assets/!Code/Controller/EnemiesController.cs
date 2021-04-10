@@ -46,6 +46,7 @@ namespace DurkaSimRemastered
             {
                 crawler.Execute(deltaTime);
             }
+            _jamBoss.Execute(deltaTime);
         }
 
         public void FixedExecute()

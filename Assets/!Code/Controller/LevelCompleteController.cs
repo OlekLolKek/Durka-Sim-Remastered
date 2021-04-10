@@ -54,6 +54,8 @@ namespace DurkaSimRemastered
         {
             yield return new WaitForSeconds(DeathTimings.FADE_IN_TIME);
             _characterView.transform.position = _startPosition;
+            _playerLifeModel.SetHealth(_playerLifeModel.MaxHealth);
+            _playerLifeModel.IsDead = false;
         }
         
         public void Cleanup()

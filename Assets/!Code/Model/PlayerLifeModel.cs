@@ -20,12 +20,14 @@ namespace Model
         public void SetHealth(int newHealth)
         {
             CurrentHealth = newHealth;
-            OnPlayerHealthChanged.Invoke(CurrentHealth);
+            
             if (CurrentHealth <= 0)
             {
                 CurrentHealth = 0;
                 Die();
             }
+            
+            OnPlayerHealthChanged.Invoke(CurrentHealth);
         }
 
         private void Die()
