@@ -13,6 +13,7 @@ namespace DurkaSimRemastered
         [SerializeField] private float _minSqrDistanceToTarget;
         [SerializeField] private float _visibilityLength;
         [SerializeField] private float _playerHeightOffset = 0.5f;
+        [SerializeField] private float _enemyHeightOffset = 0.5f;
         [SerializeField] private LayerMask _layerMask;
 
         public int Health => _health;
@@ -22,6 +23,7 @@ namespace DurkaSimRemastered
         public float MinSqrDistanceToTarget => _minSqrDistanceToTarget;
         public float VisibilityLength => _visibilityLength;
         public float PlayerHeightOffset => _playerHeightOffset;
+        public float EnemyHeightOffset => _enemyHeightOffset;
         public LayerMask LayerMask => _layerMask;
     }
 }

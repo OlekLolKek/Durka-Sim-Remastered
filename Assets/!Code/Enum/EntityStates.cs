@@ -5,6 +5,7 @@ namespace DurkaSimRemastered
         Idle = 0,
         Moving = 1,
         Attacking = 2,
-        Dead = 3,
+        Charging = 3,
+        Dead = 4,
     }
 }

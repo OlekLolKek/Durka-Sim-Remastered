@@ -39,9 +39,9 @@ namespace DurkaSimRemastered
 
         private void OnTriggerEnter(Collider2D other)
         {
-            if (other.TryGetComponent(out PlayerView playerView))
+            if (other.TryGetComponent(out IDamageable damageable))
             {
-                playerView.Damage(DEATH_PIT_DAMAGE);
+                damageable.Damage(DEATH_PIT_DAMAGE);
             }
         }
 

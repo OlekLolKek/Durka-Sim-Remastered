@@ -6,5 +6,6 @@
         Run = 1,
         Jump = 2,
         Attack = 3,
+        Charge = 4,
     }
 }

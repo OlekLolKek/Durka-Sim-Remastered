@@ -10,8 +10,6 @@ namespace DurkaSimRemastered
     //TODO: refactor this class, divide by several smaller classes
     public class StalkerAI : IExecute, IFixedExecute, ICleanup
     {
-        private List<RaycastHit2D> _raycastResults;
-
         private PlayerView _playerView;
 
         private EntityStates _state;
@@ -180,7 +178,9 @@ namespace DurkaSimRemastered
             var target = _target.position;
             target.y += _config.PlayerHeightOffset;
             var direction = target - position;
-            var hit = Physics2D.Raycast(position, direction, _config.VisibilityLength, _config.LayerMask);
+            var hit = Physics2D.Raycast(
+                position, direction, 
+                _config.VisibilityLength, _config.LayerMask);
             if (hit.collider != null)
             {
                 if (hit.collider.TryGetComponent(out _playerView))

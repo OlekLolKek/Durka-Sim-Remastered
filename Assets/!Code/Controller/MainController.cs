@@ -15,9 +15,11 @@ namespace DurkaSimRemastered
         [SerializeField] private string _leverConfigPath = "Animation/LeverAnimationConfig";
         [SerializeField] private string _interactionButtonHintConfigPath = "Animation/InteractionButtonAnimationConfig";
         [SerializeField] private string _bossJamConfigPath = "Animation/BossJamAnimationConfig";
+        [SerializeField] private string _kuvaldinConfigPath = "Animation/KuvaldinAnimationConfig";
         [SerializeField] private string _bulletConfigPath = "Bullet";
         [SerializeField] private string _robotAiConfigPath = "AIConfig";
         [SerializeField] private string _bossJamAIConfigPath = "BossJamAiConfig";
+        [SerializeField] private string _kuvaldinAIConfigPath = "KuvaldinAIConfig";
         [Space]
         [SerializeField] private int _playerHealth = 100;
         [Range(0, 1)]
@@ -46,9 +48,11 @@ namespace DurkaSimRemastered
             var robotAnimationConfig = Resources.Load<SpriteAnimatorConfig>(_robotConfigPath);
             var leverConfig = Resources.Load<SpriteAnimatorConfig>(_leverConfigPath);
             var jamBossAnimationConfig = Resources.Load<SpriteAnimatorConfig>(_bossJamConfigPath);
+            var kuvaldinAnimationConfig = Resources.Load<SpriteAnimatorConfig>(_kuvaldinConfigPath);
 
             var robotAiConfig = Resources.Load<AIConfig>(_robotAiConfigPath);
             var jamBossAiConfig = Resources.Load<AIConfig>(_bossJamAIConfigPath);
+            var kuvaldinAIConfig = Resources.Load<AIConfig>(_kuvaldinAIConfigPath);
             var bulletConfig = Resources.Load<BulletConfig>(_bulletConfigPath);
             
             var inputModel = new InputModel();
@@ -81,8 +85,10 @@ namespace DurkaSimRemastered
             
             _controllers.AddController(
                new EnemiesController(robotAiConfig, _playerView.transform, 
-                   robotAnimationConfig, jamBossAnimationConfig, 
-                   jamBossAiConfig));
+                   robotAnimationConfig, jamBossAnimationConfig,
+                   kuvaldinAnimationConfig,
+                   jamBossAiConfig, 
+                   kuvaldinAIConfig));
             
             _controllers.AddController(
                 new QuestController(leverConfig, playerDataModel,

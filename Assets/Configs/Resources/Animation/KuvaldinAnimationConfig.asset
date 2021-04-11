@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0bb968e777344189dec996c9e859fae, type: 3}
+  m_Name: KuvaldinAnimationConfig
+  m_EditorClassIdentifier: 
+  Sequences:
+  - Track: 0
+    Sprites:
+    - {fileID: 952296829242671262, guid: b59c125286c2e224e8d408ae7631c56b, type: 3}
+    - {fileID: -7502224289075721025, guid: b59c125286c2e224e8d408ae7631c56b, type: 3}
+    - {fileID: -4932417991419125028, guid: b59c125286c2e224e8d408ae7631c56b, type: 3}
+    - {fileID: -7502224289075721025, guid: b59c125286c2e224e8d408ae7631c56b, type: 3}
+  - Track: 4
+    Sprites:
+    - {fileID: 952296829242671262, guid: b59c125286c2e224e8d408ae7631c56b, type: 3}
+    - {fileID: -7502224289075721025, guid: b59c125286c2e224e8d408ae7631c56b, type: 3}
+    - {fileID: -4932417991419125028, guid: b59c125286c2e224e8d408ae7631c56b, type: 3}
+  - Track: 3
+    Sprites:
+    - {fileID: 8073327178397445440, guid: b59c125286c2e224e8d408ae7631c56b, type: 3}
+    - {fileID: -7254469467648937378, guid: b59c125286c2e224e8d408ae7631c56b, type: 3}
+    - {fileID: 6922157236034775384, guid: b59c125286c2e224e8d408ae7631c56b, type: 3}
