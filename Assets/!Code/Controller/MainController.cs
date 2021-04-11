@@ -20,16 +20,18 @@ namespace DurkaSimRemastered
         [SerializeField] private string _bossJamAIConfigPath = "BossJamAiConfig";
         [Space]
         [SerializeField] private int _playerHealth = 100;
+        [Range(0, 1)]
+        [SerializeField] private float _parallaxRatio;
         [SerializeField] private Camera _camera;
         [SerializeField] private PlayerView _playerView;
         [SerializeField] private LevelObjectView _interactionButtonHintView;
         [SerializeField] private Transform _bulletSource;
         [SerializeField] private Transform _background;
         [SerializeField] private List<BulletView> _bullets;
-        [SerializeField] private List<BulletParticleSystemView> _bulletParticles;
+        [SerializeField] private List<BulletEffectView> _bulletParticles;
         [SerializeField] private List<LevelObjectView> _winZones;
         [SerializeField] private List<LevelObjectView> _deathZones;
-        [SerializeField] private List<LevelObjectView> _coins;
+        [SerializeField] private List<SyringeView> _coins;
         [SerializeField] private List<ElevatorView> _elevatorViews;
 
         private Controllers _controllers;
@@ -71,7 +73,8 @@ namespace DurkaSimRemastered
                      ammoModel));
             
             _controllers.AddController(
-                new ParallaxController(_camera.transform, _background));
+                new ParallaxController(_camera.transform, _background,
+                    _parallaxRatio));
             
             _controllers.AddController(
                 new ElevatorController(_elevatorViews));

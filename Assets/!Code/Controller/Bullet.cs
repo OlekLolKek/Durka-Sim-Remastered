@@ -7,16 +7,16 @@ namespace DurkaSimRemastered
     public sealed class Bullet : IExecute
     {
         private readonly BulletView _view;
-        private readonly BulletParticleSystemView _bulletParticleSystemView;
+        private readonly BulletEffectView _bulletEffectView;
 
         private readonly int _damage;
         private readonly float _throwForce;
 
-        public Bullet(BulletView view, BulletParticleSystemView bulletParticleSystemView,
+        public Bullet(BulletView view, BulletEffectView bulletEffectView,
             BulletConfig config)
         {
             _view = view;
-            _bulletParticleSystemView = bulletParticleSystemView;
+            _bulletEffectView = bulletEffectView;
             _view.SetVisible(false);
             _view.gameObject.SetActive(false);
 
@@ -39,8 +39,8 @@ namespace DurkaSimRemastered
         private void OnBulletHit(Collision2D collision)
         {
             _view.OnBulletCollision -= OnBulletHit;
-            _bulletParticleSystemView.transform.position = _view.transform.position;
-            _bulletParticleSystemView.Play();
+            _bulletEffectView.transform.position = _view.transform.position;
+            _bulletEffectView.Play();
             _view.gameObject.SetActive(false);
 
             if (collision.gameObject.TryGetComponent(out IDamageable damageable))

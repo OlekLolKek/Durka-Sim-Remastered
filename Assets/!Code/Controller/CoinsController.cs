@@ -15,9 +15,9 @@ namespace DurkaSimRemastered
         private readonly LevelObjectView _characterView;
         private readonly SpriteAnimator _spriteAnimator;
         private readonly AmmoModel _ammoModel;
-        private readonly List<LevelObjectView> _coinViews;
+        private readonly List<SyringeView> _coinViews;
 
-        public CoinsController(LevelObjectView characterView, List<LevelObjectView> coinViews, 
+        public CoinsController(LevelObjectView characterView, List<SyringeView> coinViews, 
             SpriteAnimatorConfig coinConfig, AmmoModel ammoModel)
         {
             _characterView = characterView;
@@ -39,13 +39,15 @@ namespace DurkaSimRemastered
 
         private void OnLevelObjectContact(Collider2D collider2D)
         {
-            var contactView = collider2D.gameObject.GetComponent<LevelObjectView>();
+            var contactView = collider2D.gameObject.GetComponent<SyringeView>();
 
             if (_coinViews.Contains(contactView))
             {
                 _spriteAnimator.StopAnimation(contactView.SpriteRenderer);
                 _ammoModel.SetAmmoCount(_ammoModel.AmmoCount + 1);
-                Object.Destroy(contactView.gameObject);
+                contactView.AudioSource.transform.SetParent(null);
+                contactView.AudioSource.Play();
+                contactView.gameObject.SetActive(false);
             }
         }
 

@@ -29,6 +29,12 @@ TextureImporter:
   - first:
       213: 3606616206520432256
     second: DungeonDecorationsTileset_8
+  - first:
+      213: 7630907928048372111
+    second: DungeonDecorationsTileset_9
+  - first:
+      213: 5247459406079946013
+    second: DungeonDecorationsTileset_10
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -279,8 +285,8 @@ TextureImporter:
       name: DungeonDecorationsTileset_6
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
+        x: 96
+        y: 32
         width: 32
         height: 32
       alignment: 0
@@ -300,7 +306,7 @@ TextureImporter:
       name: DungeonDecorationsTileset_7
       rect:
         serializedVersion: 2
-        x: 32
+        x: 0
         y: 0
         width: 32
         height: 32
@@ -321,7 +327,7 @@ TextureImporter:
       name: DungeonDecorationsTileset_8
       rect:
         serializedVersion: 2
-        x: 64
+        x: 32
         y: 0
         width: 32
         height: 32
@@ -334,6 +340,48 @@ TextureImporter:
       bones: []
       spriteID: 08631d6c4564d0230800000000000000
       internalID: 3606616206520432256
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonDecorationsTileset_9
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f89090d845e66e960800000000000000
+      internalID: 7630907928048372111
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonDecorationsTileset_10
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d1d6da01788b2d840800000000000000
+      internalID: 5247459406079946013
       vertices: []
       indices: 
       edges: []

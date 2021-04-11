@@ -30,7 +30,7 @@ namespace DurkaSimRemastered
         private const float SHOOTING_DELAY = 0.75f;
 
         public ShootController(List<BulletView> bulletViews, 
-            List<BulletParticleSystemView> bulletParticleSystemViews,
+            List<BulletEffectView> bulletParticleSystemViews,
             Transform bulletSource, InputModel inputModel, AmmoModel ammoModel,
             BulletConfig bulletConfig, PlayerDataModel playerDataModel,
             Camera camera, PlayerView playerView,

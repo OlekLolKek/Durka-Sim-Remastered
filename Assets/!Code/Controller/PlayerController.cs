@@ -34,7 +34,7 @@ namespace DurkaSimRemastered
         public PlayerController(PlayerView playerView, SpriteAnimatorConfig playerConfig,
             InputModel inputModel, PlayerLifeModel playerLifeModel,
             PlayerDataModel playerDataModel, List<BulletView> bullets,
-            List<BulletParticleSystemView> bulletParticles,
+            List<BulletEffectView> bulletParticles,
             Transform bulletSource, AmmoModel ammoModel,
             BulletConfig bulletConfig, Camera camera,
             DoorUseModel doorUseModel)

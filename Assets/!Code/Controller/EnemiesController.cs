@@ -15,6 +15,8 @@ namespace DurkaSimRemastered
         private readonly JamBossAI _jamBoss;
         private readonly SpriteAnimatorConfig _robotConfig;
 
+        private readonly bool _jamBossExists = true;
+
         public EnemiesController(AIConfig robotConfig, Transform playerTransform, SpriteAnimatorConfig robotAnimationConfig,
             SpriteAnimatorConfig jamBossAnimationConfig, AIConfig jamBossConfig)
         {
@@ -32,12 +34,22 @@ namespace DurkaSimRemastered
 
             var jamView = Object.FindObjectOfType<JamBossView>();
 
-            _jamBoss = new JamBossAI(jamView, jamBossConfig, jamBossAnimationConfig);
+            if (jamView != null)
+            {
+                _jamBoss = new JamBossAI(jamView, jamBossConfig, jamBossAnimationConfig);
+            }
+            else
+            {
+                _jamBossExists = false;
+            }
         }
 
         public void Initialize()
         {
-            _jamBoss.Initialize();
+            if (_jamBossExists)
+            {
+                _jamBoss.Initialize();
+            }
         }
 
         public void Execute(float deltaTime)
@@ -46,7 +58,11 @@ namespace DurkaSimRemastered
             {
                 crawler.Execute(deltaTime);
             }
-            _jamBoss.Execute(deltaTime);
+
+            if (_jamBossExists)
+            {
+                _jamBoss.Execute(deltaTime);
+            }
         }
 
         public void FixedExecute()
