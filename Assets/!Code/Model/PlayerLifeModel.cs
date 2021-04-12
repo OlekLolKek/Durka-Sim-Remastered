@@ -6,6 +6,7 @@ namespace Model
     public class PlayerLifeModel
     {
         public Action<int> OnPlayerHealthChanged { get; set; } = delegate(int i) {  };
+        public Action OnPlayerWon { get; set; } = delegate {  };
         public Action OnPlayerDied { get; set; } = delegate {  };
         public int MaxHealth { get; set; }
         public int CurrentHealth { get; private set; }
@@ -28,6 +29,11 @@ namespace Model
             }
             
             OnPlayerHealthChanged.Invoke(CurrentHealth);
+        }
+
+        public void Win()
+        {
+            OnPlayerWon.Invoke();
         }
 
         private void Die()

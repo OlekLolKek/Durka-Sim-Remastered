@@ -19,6 +19,7 @@ namespace DurkaSimRemastered
         private void OnDamageReceived(int damage)
         {
             _playerLifeModel.SetHealth(_playerLifeModel.CurrentHealth - damage);
+            _playerView.AudioSource.Play();
             _playerView.DamageParticleSystem.Play();
         }
 

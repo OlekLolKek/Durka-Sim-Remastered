@@ -30,7 +30,7 @@ namespace DurkaSimRemastered
         private const float SHOOTING_DELAY = 0.75f;
 
         public ShootController(List<BulletView> bulletViews, 
-            List<BulletEffectView> bulletParticleSystemViews,
+            List<BulletEffectView> bulletEffectViews,
             Transform bulletSource, InputModel inputModel, AmmoModel ammoModel,
             BulletConfig bulletConfig, PlayerDataModel playerDataModel,
             Camera camera, PlayerView playerView,
@@ -42,7 +42,7 @@ namespace DurkaSimRemastered
             for (var i = 0; i < bulletViews.Count; i++)
             {
                 var bulletView = bulletViews[i];
-                var bulletParticleSystemView = bulletParticleSystemViews[i];
+                var bulletParticleSystemView = bulletEffectViews[i];
                 _bullets.Add(new Bullet(bulletView, bulletParticleSystemView, bulletConfig));
             }
             

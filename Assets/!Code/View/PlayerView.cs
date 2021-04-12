@@ -10,8 +10,10 @@ namespace DurkaSimRemastered
         public Action<int> OnDamageReceived { get; set; } = delegate(int i) {  };
 
         [SerializeField] private ParticleSystem _damageParticleSystem;
+        [SerializeField] private AudioSource _audioSource;
 
         public ParticleSystem DamageParticleSystem => _damageParticleSystem;
+        public AudioSource AudioSource => _audioSource;
         
         public void Damage(int damage)
         {

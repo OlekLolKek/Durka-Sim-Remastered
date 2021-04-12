@@ -20,6 +20,7 @@ namespace DurkaSimRemastered
         private DoorUseModel _doorUseModel;
         private IDisposable _fadeCoroutine;
         private IDisposable _deathCoroutine;
+        private IDisposable _winCoroutine;
 
         public void Initialize(DoorUseModel doorUseModel, PlayerLifeModel playerLifeModel)
         {
@@ -29,6 +30,7 @@ namespace DurkaSimRemastered
 
             _playerLifeModel = playerLifeModel;
             _playerLifeModel.OnPlayerDied += OnPlayerDied;
+            _playerLifeModel.OnPlayerWon += OnPlayerWon;
             
             Hide();
         }
@@ -57,6 +59,17 @@ namespace DurkaSimRemastered
             Hide();
         }
 
+        private void OnPlayerWon()
+        {
+            _winCoroutine = WinFade().ToObservable().Subscribe();
+        }
+
+        private IEnumerator WinFade()
+        {
+            Show();
+            yield return new WaitForSeconds(DeathTimings.PAUSE_TIME);
+        }
+
         public void Show()
         {
             _image.DOColor(_blackColor, TeleportTimings.FADE_IN_DURATION);
@@ -81,8 +94,10 @@ namespace DurkaSimRemastered
         {
             _doorUseModel.OnDoorActivated -= StartFade;
             _playerLifeModel.OnPlayerDied -= OnPlayerDied;
+            _playerLifeModel.OnPlayerWon -= OnPlayerWon;
             _fadeCoroutine?.Dispose();
             _deathCoroutine?.Dispose();
+            _winCoroutine?.Dispose();
         }
     }
 }

@@ -12,31 +12,38 @@ namespace DurkaSimRemastered
     public class EnemiesController : IInitialize, IExecute, IFixedExecute, ICleanup
     {
         private readonly List<StalkerAI> _crawlers = new List<StalkerAI>();
+        private readonly List<BubAI> _bubs = new List<BubAI>();
         private readonly JamBossAI _jamBoss;
         private readonly KuvaldinBossAI _kuvaldinBoss;
-        private readonly SpriteAnimatorConfig _robotConfig;
 
         private readonly bool _jamBossExists = true;
         private readonly bool _kuvaldinBossExists = true;
 
         public EnemiesController(AIConfig robotConfig, Transform playerTransform, 
             SpriteAnimatorConfig robotAnimationConfig,
+            SpriteAnimatorConfig shizikAnimationConfig,
             SpriteAnimatorConfig jamBossAnimationConfig, 
             SpriteAnimatorConfig kuvaldinBossAnimationConfig,
-            AIConfig jamBossConfig, AIConfig kuvaldinAIConfig)
+            SpriteAnimatorConfig bubAnimationConfig,
+            AIConfig jamBossConfig, AIConfig kuvaldinAIConfig,
+            AIConfig bubAIConfig)
         {
             var seekers = Object.FindObjectsOfType<Seeker>().ToList();
 
             foreach (var seeker in seekers)
             {
-                if (!seeker.TryGetComponent(out EnemyView levelObjectView))
+                if (seeker.TryGetComponent(out CrawlerView crawlerView))
                 {
-                    throw new ArgumentNullException($"{seeker} doesn't have a {typeof(LevelObjectView)} component.");
+                    _crawlers.Add(new StalkerAI(crawlerView, robotConfig, 
+                        seeker, playerTransform, 
+                        robotAnimationConfig));
                 }
-                
-                _crawlers.Add(new StalkerAI(levelObjectView, robotConfig, 
-                    seeker, playerTransform, 
-                    robotAnimationConfig));
+                else if (seeker.TryGetComponent(out ShizikView shizikView))
+                {
+                    _crawlers.Add(new StalkerAI(shizikView, robotConfig,
+                        seeker, playerTransform, shizikAnimationConfig
+                        ));
+                }
             }
 
             var jamView = Object.FindObjectOfType<JamBossView>();
@@ -55,12 +62,20 @@ namespace DurkaSimRemastered
 
             if (kuvaldinView != null)
             {
-                _kuvaldinBoss = new KuvaldinBossAI(kuvaldinView,kuvaldinBossAnimationConfig,
+                _kuvaldinBoss = new KuvaldinBossAI(kuvaldinView, kuvaldinBossAnimationConfig,
                     playerTransform, kuvaldinAIConfig);
             }
             else
             {
                 _kuvaldinBossExists = false;
+            }
+
+            var bubs = Object.FindObjectsOfType<BubView>();
+
+            foreach (var bub in bubs)
+            {
+                _bubs.Add(new BubAI(bub, bubAnimationConfig,
+                    playerTransform, bubAIConfig));
             }
         }
 
@@ -81,6 +96,11 @@ namespace DurkaSimRemastered
             foreach (var crawler in _crawlers)
             {
                 crawler.Execute(deltaTime);
+            }
+
+            foreach (var bub in _bubs)
+            {
+                bub.Execute(deltaTime);
             }
 
             if (_jamBossExists)
@@ -107,6 +127,21 @@ namespace DurkaSimRemastered
             foreach (var crawler in _crawlers)
             {
                 crawler.Cleanup();
+            }
+
+            foreach (var bub in _bubs)
+            {
+                bub.Cleanup();
+            }
+
+            if (_kuvaldinBossExists)
+            {
+                _kuvaldinBoss.Cleanup();
+            }
+
+            if (_jamBossExists)
+            {
+                _jamBoss.Cleanup();
             }
         }
     }

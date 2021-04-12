@@ -41,7 +41,7 @@ namespace DurkaSimRemastered
             mousePosition -= barrelPosition;
 
             var angle = Mathf.Atan2(mousePosition.y, mousePosition.x) * Mathf.Rad2Deg;
-
+            
             _direction.z = angle;
             _barrelTransform.rotation = Quaternion.Euler(_direction);
         }

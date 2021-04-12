@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace DurkaSimRemastered
 {
-    public class JamBossAI : IInitialize, IExecute
+    public class JamBossAI : IInitialize, IExecute, ICleanup
     {
         private readonly SpriteAnimator _spriteAnimator;
         private readonly EnemyView _view;
@@ -37,6 +37,7 @@ namespace DurkaSimRemastered
         {
             _currentHealth -= damage;
             _view.DamageParticleSystem.Play();
+            _view.AudioSource.Play();
             if (_currentHealth <= 0)
             {
                 Die();
@@ -50,6 +51,11 @@ namespace DurkaSimRemastered
             _view.gameObject.SetActive(false);
             _view.DeathParticleSystem.Play();
             _spriteAnimator.StopAnimation(_view.SpriteRenderer);
+        }
+
+        public void Cleanup()
+        {
+            _view.OnDamageReceived -= OnDamageReceived;
         }
     }
 }

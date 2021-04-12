@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Diagnostics;
 using DurkaSimRemastered.Interface;
 using Model;
 using UnityEngine;
@@ -54,16 +52,25 @@ namespace DurkaSimRemastered
             _currentHealth = _aiConfig.Health;
             _view.OnDamageReceived += OnDamageReceived;
             _jumpForce = DEFAULT_JUMP_FORCE * _view.Rigidbody2D.mass;
+            _view.OnKuvaldinCollision += OnKuvaldinCollision;
         }
 
         private void OnDamageReceived(int damage)
         {
-            Debug.Log($"OnDamageReceived {damage}");
             _currentHealth -= damage;
-            Debug.Log(_currentHealth);
+            _view.DamageParticleSystem.Play();
+            _view.AudioSource.Play();
             if (_currentHealth <= 0)
             {
                 Die();
+            }
+        }
+
+        private void OnKuvaldinCollision(Collision2D collision)
+        {
+            if (collision.gameObject.TryGetComponent(out _playerView))
+            {
+                _playerView.Damage(_aiConfig.Damage);
             }
         }
 
@@ -71,8 +78,11 @@ namespace DurkaSimRemastered
         {
             _isDead = true;
             _spriteAnimator.StopAnimation(_view.SpriteRenderer);
+            _view.DeathParticleSystem.transform.SetParent(null);
+            _view.DeathParticleSystem.Play();
             _view.gameObject.SetActive(false);
             _view.OnDamageReceived -= OnDamageReceived;
+            _view.OnKuvaldinCollision -= OnKuvaldinCollision;
         }
 
         public void Initialize()
@@ -131,9 +141,7 @@ namespace DurkaSimRemastered
             var hit = Physics2D.Raycast(
                 position, direction, 
                 VISION_LENGTH, _aiConfig.LayerMask);
-            
-            Debug.DrawRay(position, direction, Color.red);
-            
+
             if (hit.collider != null)
             {
                 if (hit.collider.TryGetComponent(out _playerView))
@@ -169,6 +177,7 @@ namespace DurkaSimRemastered
             
             if (_kuvaldinDataModel.IsGrounded)
             {
+                _view.Rigidbody2D.velocity = _view.Rigidbody2D.velocity.Change(x: 0.0f);
                 _chargeTimer += deltaTime;
                 if (_chargeTimer >= CHARGE_TIME)
                 {
@@ -241,6 +250,7 @@ namespace DurkaSimRemastered
         public void Cleanup()
         {
             _view.OnDamageReceived -= OnDamageReceived;
+            _view.OnKuvaldinCollision -= OnKuvaldinCollision;
         }
     }
 }

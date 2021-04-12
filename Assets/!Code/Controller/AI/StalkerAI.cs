@@ -223,6 +223,7 @@ namespace DurkaSimRemastered
         {
             _currentHealth -= damage;
             _view.DamageParticleSystem.Play();
+            _view.AudioSource.Play();
             if (_currentHealth <= 0)
             {
                 Die();
