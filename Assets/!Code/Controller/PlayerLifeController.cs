@@ -13,7 +13,9 @@ namespace DurkaSimRemastered
         {
             _playerView = playerView;
             _playerView.OnDamageReceived += OnDamageReceived;
+            
             _playerLifeModel = playerLifeModel;
+            _playerLifeModel.OnPlayerDied += OnPlayerDied;
         }
 
         private void OnDamageReceived(int damage)
@@ -23,9 +25,15 @@ namespace DurkaSimRemastered
             _playerView.DamageParticleSystem.Play();
         }
 
+        private void OnPlayerDied()
+        {
+            _playerView.OnDamageReceived -= OnDamageReceived;
+        }
+
         public void Cleanup()
         {
             _playerView.OnDamageReceived -= OnDamageReceived;
+            _playerLifeModel.OnPlayerDied -= OnPlayerDied;
         }
     }
 }

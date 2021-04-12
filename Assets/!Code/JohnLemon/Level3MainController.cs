@@ -31,6 +31,8 @@ namespace DurkaSimRemastered
         [SerializeField] private LevelObjectView _winZone;
         [SerializeField] private FloorDoorView _floorDoorView;
         [SerializeField] private List<SyringeView> _coins;
+        [SerializeField] private LevelObjectView _zoomOutTrigger;
+        [SerializeField] private LevelObjectView _zoomInTrigger;
 
         private readonly Controllers _controllers = new Controllers();
 
@@ -61,7 +63,7 @@ namespace DurkaSimRemastered
                     _bulletSource, ammoModel, bulletConfig, _camera, doorUseModel));
             
             _controllers.AddController(
-                new CameraController(_camera.transform, _playerView.transform));
+                new Level3CameraController(_zoomOutTrigger, _zoomInTrigger, _playerView.transform));
             
             _controllers.AddController(
                 new CoinsController(_playerView, _coins, coinConfig,
@@ -76,7 +78,8 @@ namespace DurkaSimRemastered
                     johnLemonLifeModel));
             
             _controllers.AddController(
-                new UIController(playerLifeModel, ammoModel, doorUseModel));
+                new Level3UIController(playerLifeModel, ammoModel, 
+                    johnLemonLifeModel));
             
             _controllers.AddController(
                 new Level3MusicController(_musicAudioSource, playerLifeModel, 

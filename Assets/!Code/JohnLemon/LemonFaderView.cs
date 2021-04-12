@@ -59,6 +59,7 @@ namespace DurkaSimRemastered
         {
             _playerLifeModel.OnPlayerDied -= OnPlayerDied;
             _playerLifeModel.OnPlayerWon -= OnPlayerWon;
+            _image.DOKill();
         }
     }
 }

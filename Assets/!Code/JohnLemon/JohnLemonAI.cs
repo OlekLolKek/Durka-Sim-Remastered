@@ -70,6 +70,8 @@ namespace DurkaSimRemastered
                 _burstLasers.Add(new LemonLaser(laserView, effectView, burstLaserConfig));
             }
 
+            _timeUntilNextBurst = TIME_BETWEEN_BURSTS;
+
             _barrelRotation = new LemonBarrelRotation(_leftBulletSource, _rightBulletSource, player);
             
             _view = Object.FindObjectOfType<JohnLemonView>();
