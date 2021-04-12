@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace DurkaSimRemastered
 {
-    public class JohnLemonHealthView : MonoBehaviour, IUIElement, ICleanup
+    public sealed class JohnLemonHealthView : MonoBehaviour, IUIElement, ICleanup
     {
         [SerializeField] private Image _healthBar;
         [SerializeField] private Text _healthText;

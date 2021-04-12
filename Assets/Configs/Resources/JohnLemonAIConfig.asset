@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d555863e199b41c48f4290804be68ae4, type: 3}
   m_Name: JohnLemonAIConfig
   m_EditorClassIdentifier: 
-  _health: 10
+  _health: 100
   _damage: 0
   _speed: 0
   _rotationSpeed: 0
   _minSqrDistanceToTarget: 0
-  _visibilityLength: 15
+  _visibilityLength: 20
   _playerHeightOffset: 0.5
   _enemyHeightOffset: 0.5
   _layerMask:

@@ -12,7 +12,7 @@ namespace DurkaSimRemastered
         private readonly PlayerLifeModel _playerLifeModel;
         
         private const float MIN_VOLUME = 0.0f;
-        private const float MAX_VOLUME = 0.125f;
+        private const float MAX_VOLUME = 0.33f;
 
         public MusicController(AudioSource musicAudioSource,
             PlayerLifeModel playerLifeModel)

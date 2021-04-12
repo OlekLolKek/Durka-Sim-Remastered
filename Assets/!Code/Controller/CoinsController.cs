@@ -8,27 +8,28 @@ using Object = UnityEngine.Object;
 
 namespace DurkaSimRemastered
 {
-    public sealed class CoinsController : IExecute, IDisposable
+    public sealed class CoinsController : IExecute, ICleanup
     {
         private const float ANIMATIONS_SPEED = 10.0f;
 
         private readonly LevelObjectView _characterView;
         private readonly SpriteAnimator _spriteAnimator;
         private readonly AmmoModel _ammoModel;
-        private readonly List<SyringeView> _coinViews;
+        private readonly List<SyringeView> _syringeViews;
 
-        public CoinsController(LevelObjectView characterView, List<SyringeView> coinViews, 
-            SpriteAnimatorConfig coinConfig, AmmoModel ammoModel)
+        public CoinsController(LevelObjectView characterView, List<SyringeView> syringeViews, 
+            SpriteAnimatorConfig syringeAnimatorConfig, AmmoModel ammoModel)
         {
             _characterView = characterView;
-            _spriteAnimator = new SpriteAnimator(coinConfig);
-            _coinViews = coinViews;
+            _spriteAnimator = new SpriteAnimator(syringeAnimatorConfig);
+            _syringeViews = syringeViews;
             _ammoModel = ammoModel;
             _characterView.OnTriggerEnter += OnLevelObjectContact;
 
-            foreach (var coinView in coinViews)
+            foreach (var coinView in syringeViews)
             {
-                _spriteAnimator.StartAnimation(coinView.SpriteRenderer, AnimationState.Idle, true, ANIMATIONS_SPEED);
+                _spriteAnimator.StartAnimation(coinView.SpriteRenderer, AnimationState.Idle, 
+                    true, AnimationSpeeds.NORMAL_ANIMATION_SPEED);
             }
         }
 
@@ -41,7 +42,7 @@ namespace DurkaSimRemastered
         {
             var contactView = collider2D.gameObject.GetComponent<SyringeView>();
 
-            if (_coinViews.Contains(contactView))
+            if (_syringeViews.Contains(contactView))
             {
                 _spriteAnimator.StopAnimation(contactView.SpriteRenderer);
                 _ammoModel.SetAmmoCount(_ammoModel.AmmoCount + 1);
@@ -51,7 +52,7 @@ namespace DurkaSimRemastered
             }
         }
 
-        public void Dispose()
+        public void Cleanup()
         {
             _characterView.OnTriggerEnter -= OnLevelObjectContact;
         }

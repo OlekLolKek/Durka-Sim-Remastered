@@ -33,6 +33,7 @@ namespace DurkaSimRemastered
         [SerializeField] private List<SyringeView> _coins;
         [SerializeField] private LevelObjectView _zoomOutTrigger;
         [SerializeField] private LevelObjectView _zoomInTrigger;
+        [SerializeField] private List<AmmoDropperView> _droppers;
 
         private readonly Controllers _controllers = new Controllers();
 
@@ -66,8 +67,8 @@ namespace DurkaSimRemastered
                 new Level3CameraController(_zoomOutTrigger, _zoomInTrigger, _playerView.transform));
             
             _controllers.AddController(
-                new CoinsController(_playerView, _coins, coinConfig,
-                    ammoModel));
+                new Level3CoinController(_playerView, _coins, coinConfig,
+                    ammoModel, _droppers));
             
             _controllers.AddController(
                 new JohnLemonAI(_lemonLaserViews, _burstLaserViews, 
