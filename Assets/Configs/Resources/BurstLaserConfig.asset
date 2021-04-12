@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: BurstLaserConfig
   m_EditorClassIdentifier: 
   _throwForce: 25
-  _damage: 5
+  _damage: 10

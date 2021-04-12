@@ -28,7 +28,8 @@ namespace DurkaSimRemastered
         [SerializeField] private List<BulletEffectView> _lemonLaserEffects;
         [SerializeField] private List<LemonLaserView> _burstLaserViews;
         [SerializeField] private List<BulletEffectView> _burstLaserEffects;
-        [SerializeField] private List<LevelObjectView> _winZones;
+        [SerializeField] private LevelObjectView _winZone;
+        [SerializeField] private FloorDoorView _floorDoorView;
         [SerializeField] private List<SyringeView> _coins;
 
         private readonly Controllers _controllers = new Controllers();
@@ -47,6 +48,7 @@ namespace DurkaSimRemastered
             var inputModel = new InputModel();
             var ammoModel = new AmmoModel();
             var playerLifeModel = new PlayerLifeModel(_playerHealth);
+            var johnLemonLifeModel = new JohnLemonLifeModel(johnLemonAIConfig.Health);
             var playerDataModel = new PlayerDataModel();
             var doorUseModel = new DoorUseModel();
 
@@ -70,13 +72,22 @@ namespace DurkaSimRemastered
                     _lemonLaserEffects, _burstLaserEffects,
                     _leftLemonBulletSource, _rightLemonBulletSource, 
                     _playerView.transform, lemonLaserConfig,
-                    burstLaserConfig, johnLemonAIConfig));
+                    burstLaserConfig, johnLemonAIConfig,
+                    johnLemonLifeModel));
             
             _controllers.AddController(
                 new UIController(playerLifeModel, ammoModel, doorUseModel));
             
             _controllers.AddController(
-                new MusicController(_musicAudioSource, playerLifeModel));
+                new Level3MusicController(_musicAudioSource, playerLifeModel, 
+                    johnLemonLifeModel));
+
+            _controllers.AddController(
+                new JohnLemonDeathController(johnLemonLifeModel));
+            
+            _controllers.AddController(
+                new Level3CompleteController(playerLifeModel, johnLemonLifeModel, 
+                _floorDoorView, _winZone));
             
             _controllers.Initialize();
         }

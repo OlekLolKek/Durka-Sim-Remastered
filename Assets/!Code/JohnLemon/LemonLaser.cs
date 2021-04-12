@@ -26,7 +26,6 @@ namespace DurkaSimRemastered
 
         public void Throw(Vector3 position, Vector2 velocity)
         {
-            Debug.Log("pew");
             _view.gameObject.SetActive(true);
             _view.SetVisible(false);
             _view.transform.position = position;
@@ -35,6 +34,7 @@ namespace DurkaSimRemastered
             _view.Rigidbody2D.AddForce(velocity * _throwForce, ForceMode2D.Impulse);
             _view.OnLaserCollision += OnLaserHit;
             _view.SetVisible(true);
+            _bulletEffectView.PlayStart();
         }
 
         private void OnLaserHit(Collision2D other)
@@ -60,7 +60,6 @@ namespace DurkaSimRemastered
             Vector3 velocity = _view.Rigidbody2D.velocity;
             var angle = Mathf.Atan2(velocity.y, velocity.x) * Mathf.Rad2Deg;
             _view.transform.rotation = Quaternion.Euler(0.0f, 0.0f, angle - 90.0f);
-            Debug.Log(_view.transform.rotation);
         }
     }
 }
