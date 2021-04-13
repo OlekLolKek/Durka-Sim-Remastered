@@ -1,5 +1,4 @@
 using DurkaSimRemastered.Interface;
-using Unity.Mathematics;
 using UnityEngine;
 
 
@@ -8,21 +7,46 @@ namespace DurkaSimRemastered
     public sealed class Bullet : IExecute
     {
         private readonly BulletView _view;
+        private readonly BulletEffectView _bulletEffectView;
 
-        public Bullet(BulletView view)
+        private readonly int _damage;
+        private readonly float _throwForce;
+
+        public Bullet(BulletView view, BulletEffectView bulletEffectView,
+            BulletConfig config)
         {
             _view = view;
+            _bulletEffectView = bulletEffectView;
             _view.SetVisible(false);
+            _view.gameObject.SetActive(false);
+
+            _throwForce = config.ThrowForce;
+            _damage = config.Damage;
         }
 
-        public void Throw(Vector3 position, Vector3 velocity)
+        public void Throw(Vector3 position, Vector2 velocity)
         {
+            _view.gameObject.SetActive(true);
             _view.SetVisible(false);
             _view.transform.position = position;
             _view.Rigidbody2D.velocity = Vector2.zero;
             _view.Rigidbody2D.angularVelocity = 0.0f;
-            _view.Rigidbody2D.AddForce(velocity, ForceMode2D.Impulse);
+            _view.Rigidbody2D.AddForce(velocity * _throwForce, ForceMode2D.Impulse);
+            _view.OnBulletCollision += OnBulletHit;
             _view.SetVisible(true);
+        }
+
+        private void OnBulletHit(Collision2D collision)
+        {
+            _view.OnBulletCollision -= OnBulletHit;
+            _bulletEffectView.transform.position = _view.transform.position;
+            _bulletEffectView.Play();
+            _view.gameObject.SetActive(false);
+
+            if (collision.gameObject.TryGetComponent(out IDamageable damageable))
+            {
+                damageable.Damage(_damage);
+            }
         }
 
         public void Execute(float deltaTime)

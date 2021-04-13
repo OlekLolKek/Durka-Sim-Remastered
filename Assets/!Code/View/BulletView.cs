@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 
@@ -5,6 +6,8 @@ namespace DurkaSimRemastered
 {
     public class BulletView : LevelObjectView
     {
+        public event Action<Collision2D> OnBulletCollision = delegate(Collision2D collision2D) {  }; 
+        
         [SerializeField] private TrailRenderer _trail;
 
         public void SetVisible(bool visible)
@@ -20,6 +23,11 @@ namespace DurkaSimRemastered
             }
 
             SpriteRenderer.enabled = visible;
+        }
+
+        private void OnCollisionEnter2D(Collision2D other)
+        {
+            OnBulletCollision.Invoke(other);
         }
     }
 }

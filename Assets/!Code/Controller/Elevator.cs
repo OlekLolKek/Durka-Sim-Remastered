@@ -1,20 +1,21 @@
 using System;
 using DurkaSimRemastered.Interface;
+using UnityEngine;
 
 
 namespace DurkaSimRemastered
 {
     public class Elevator : IExecute
     {
+        private ElevatorState _state = ElevatorState.IdleDown;
+        private float _idleTimer;
+        
         private readonly ElevatorView _view;
         private readonly float _maxHeight;
         private readonly float _minHeight;
-            
-        private const float IDLE_TIME = 0.5f;
         
-        private ElevatorState _state = ElevatorState.IdleDown;
-        private float _idleTimer;
-        private float _speed = 3.0f;
+        private const float SPEED = 1.5f;
+        private const float IDLE_TIME = 0.5f;
 
         public Elevator(ElevatorView view)
         {
@@ -39,10 +40,10 @@ namespace DurkaSimRemastered
                     IdleDown(deltaTime);
                     break;
                 case ElevatorState.GoingDown:
-                    GoDown(deltaTime);
+                    GoDown();
                     break;
                 case ElevatorState.GoingUp:
-                    GoUp(deltaTime);
+                    GoUp();
                     break;
                 case ElevatorState.None:
                     throw new Exception("Seems like the elevator is broken.");
@@ -69,32 +70,32 @@ namespace DurkaSimRemastered
             }
         }
         
-        private void GoUp(float deltaTime)
+        private void GoUp()
         {
             if (_view.transform.position.y >= _maxHeight)
             {
-                var fixedPosition = _view.transform.position;
-                fixedPosition.y = _maxHeight;
-                _view.transform.position = fixedPosition;
+                _view.Rigidbody2D.velocity = Vector2.zero;
+                _view.transform.position = _view.transform.position.Change(y: _maxHeight);
                 _state = ElevatorState.IdleUp;
                 return;
             }
 
-            _view.transform.Translate(_view.transform.up * (_speed * deltaTime));
+            var newVelocity = new Vector2(0.0f, SPEED);
+            _view.Rigidbody2D.velocity = newVelocity;
         }
 
-        private void GoDown(float deltaTime)
+        private void GoDown()
         {
             if (_view.transform.position.y <= _minHeight)
             {
-                var fixedPosition = _view.transform.position;
-                fixedPosition.y = _minHeight;
-                _view.transform.position = fixedPosition;
+                _view.Rigidbody2D.velocity = Vector2.zero;
+                _view.transform.position = _view.transform.position.Change(y: _minHeight);
                 _state = ElevatorState.IdleDown;
                 return;
             }
 
-            _view.transform.Translate(-_view.transform.up * (_speed * deltaTime));
+            var newVelocity = new Vector2(0.0f, -SPEED);
+            _view.Rigidbody2D.velocity = newVelocity;
         }
     }
 }

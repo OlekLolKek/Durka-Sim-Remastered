@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0bb968e777344189dec996c9e859fae, type: 3}
+  m_Name: BubAnimationConfig
+  m_EditorClassIdentifier: 
+  Sequences:
+  - Track: 0
+    Sprites:
+    - {fileID: -5368491667112810059, guid: 8cbf489efa4a6374d9f91fb55838c79f, type: 3}
+    - {fileID: -6165494676060701099, guid: 8cbf489efa4a6374d9f91fb55838c79f, type: 3}
+    - {fileID: 8586960517341754644, guid: 8cbf489efa4a6374d9f91fb55838c79f, type: 3}
+    - {fileID: -6165494676060701099, guid: 8cbf489efa4a6374d9f91fb55838c79f, type: 3}
+  - Track: 4
+    Sprites:
+    - {fileID: -5368491667112810059, guid: 8cbf489efa4a6374d9f91fb55838c79f, type: 3}
+    - {fileID: -6165494676060701099, guid: 8cbf489efa4a6374d9f91fb55838c79f, type: 3}
+    - {fileID: 8586960517341754644, guid: 8cbf489efa4a6374d9f91fb55838c79f, type: 3}
+  - Track: 3
+    Sprites:
+    - {fileID: 291246832745157002, guid: 8cbf489efa4a6374d9f91fb55838c79f, type: 3}
+    - {fileID: 4897308175884565308, guid: 8cbf489efa4a6374d9f91fb55838c79f, type: 3}
+    - {fileID: -8577229551294558188, guid: 8cbf489efa4a6374d9f91fb55838c79f, type: 3}

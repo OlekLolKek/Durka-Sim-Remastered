@@ -13,16 +13,16 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Elevator
+  - Player
+  - Platform
+  - Collectible
+  - Enemy
+  - Interactable
+  - Bullet
+  - JohnLemon
+  - LemonLaser
+  - JohnLemonHead
   - 
   - 
   - 

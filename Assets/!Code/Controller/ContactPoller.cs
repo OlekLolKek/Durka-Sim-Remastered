@@ -1,4 +1,5 @@
 using DurkaSimRemastered.Interface;
+using Model;
 using UnityEngine;
 
 
@@ -9,37 +10,27 @@ namespace DurkaSimRemastered
         #region Fields
 
         private const float COLLISION_THRESHOLD = 0.5f;
-        private const float STAIRS_COLLISION_THRESHOLD = 0.85f;
 
+        private readonly PlayerDataModel _playerDataModel;
         private readonly ContactPoint2D[] _contacts = new ContactPoint2D[10];
         private readonly Collider2D _collider2D;
         private int _contactsCount;
 
         #endregion
 
-        
-        #region Properties
-
-        public bool IsGrounded { get; private set; }
-        public bool IsStandingOnElevator { get; private set; }
-        public bool IsStandingOnPlatform { get; private set; }
-        public bool HasLeftContacts { get; private set; }
-        public bool HasRightContacts { get; private set; }
-
-        #endregion
-
-        public ContactPoller(Collider2D collider2D)
+        public ContactPoller(Collider2D collider2D, PlayerDataModel playerDataModel)
         {
             _collider2D = collider2D;
+            _playerDataModel = playerDataModel;
         }
 
         public void Execute(float deltaTime)
         {
-            IsGrounded = false;
-            IsStandingOnElevator = false;
-            IsStandingOnPlatform = false;
-            HasLeftContacts = false;
-            HasRightContacts = false;
+            _playerDataModel.IsGrounded = false;
+            _playerDataModel.IsStandingOnElevator = false;
+            _playerDataModel.IsStandingOnPlatform = false;
+            _playerDataModel.HasLeftContacts = false;
+            _playerDataModel.HasRightContacts = false;
             _contactsCount = _collider2D.GetContacts(_contacts);
 
             for (int i = 0; i < _contactsCount; i++)
@@ -47,28 +38,31 @@ namespace DurkaSimRemastered
                 var normal = _contacts[i].normal;
                 var rigidbody = _contacts[i].rigidbody;
                 
+                bool hasRigidbody = rigidbody != null;
+                
                 if (normal.y > COLLISION_THRESHOLD)
                 {
-                    IsGrounded = true;
+                    _playerDataModel.IsGrounded = true;
+                    
                     if (_contacts[i].collider.gameObject.TryGetComponent(out ElevatorView _))
                     {
-                        IsStandingOnElevator = true;
+                        _playerDataModel.IsStandingOnElevator = true;
                     }
 
                     if (_contacts[i].collider.gameObject.TryGetComponent(out PlatformView _))
                     {
-                        IsStandingOnPlatform = true;
+                        _playerDataModel.IsStandingOnPlatform = true;
                     }
                 }
 
-                if (normal.x > COLLISION_THRESHOLD && rigidbody == null)
+                if (normal.x > COLLISION_THRESHOLD && !hasRigidbody)
                 {
-                    HasLeftContacts = true;
+                    _playerDataModel.HasLeftContacts = true;
                 }
 
-                if (normal.x < -COLLISION_THRESHOLD && rigidbody == null)
+                if (normal.x < -COLLISION_THRESHOLD && !hasRigidbody)
                 {
-                    HasRightContacts = true;
+                    _playerDataModel.HasRightContacts = true;
                 }
             }
         }

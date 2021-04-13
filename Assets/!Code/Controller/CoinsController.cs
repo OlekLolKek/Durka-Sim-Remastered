@@ -1,31 +1,35 @@
 using System;
 using System.Collections.Generic;
 using DurkaSimRemastered.Interface;
+using Model;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
 
 namespace DurkaSimRemastered
 {
-    public sealed class CoinsController : IExecute, IDisposable
+    public sealed class CoinsController : IExecute, ICleanup
     {
         private const float ANIMATIONS_SPEED = 10.0f;
 
         private readonly LevelObjectView _characterView;
         private readonly SpriteAnimator _spriteAnimator;
-        private readonly List<LevelObjectView> _coinViews;
+        private readonly AmmoModel _ammoModel;
+        private readonly List<SyringeView> _syringeViews;
 
-        public CoinsController(LevelObjectView characterView, List<LevelObjectView> coinViews, 
-            SpriteAnimatorConfig coinConfig)
+        public CoinsController(LevelObjectView characterView, List<SyringeView> syringeViews, 
+            SpriteAnimatorConfig syringeAnimatorConfig, AmmoModel ammoModel)
         {
             _characterView = characterView;
-            _spriteAnimator = new SpriteAnimator(coinConfig);;
-            _coinViews = coinViews;
-            _characterView.OnLevelObjectContact += OnLevelObjectContact;
+            _spriteAnimator = new SpriteAnimator(syringeAnimatorConfig);
+            _syringeViews = syringeViews;
+            _ammoModel = ammoModel;
+            _characterView.OnTriggerEnter += OnLevelObjectContact;
 
-            foreach (var coinView in coinViews)
+            foreach (var coinView in syringeViews)
             {
-                _spriteAnimator.StartAnimation(coinView.SpriteRenderer, AnimationState.Idle, true, ANIMATIONS_SPEED);
+                _spriteAnimator.StartAnimation(coinView.SpriteRenderer, AnimationState.Idle, 
+                    true, AnimationSpeeds.NORMAL_ANIMATION_SPEED);
             }
         }
 
@@ -36,18 +40,21 @@ namespace DurkaSimRemastered
 
         private void OnLevelObjectContact(Collider2D collider2D)
         {
-            var contactView = collider2D.gameObject.GetComponent<LevelObjectView>();
+            var contactView = collider2D.gameObject.GetComponent<SyringeView>();
 
-            if (_coinViews.Contains(contactView))
+            if (_syringeViews.Contains(contactView))
             {
                 _spriteAnimator.StopAnimation(contactView.SpriteRenderer);
-                Object.Destroy(contactView.gameObject);
+                _ammoModel.SetAmmoCount(_ammoModel.AmmoCount + 1);
+                contactView.AudioSource.transform.SetParent(null);
+                contactView.AudioSource.Play();
+                contactView.gameObject.SetActive(false);
             }
         }
 
-        public void Dispose()
+        public void Cleanup()
         {
-            _characterView.OnLevelObjectContact -= OnLevelObjectContact;
+            _characterView.OnTriggerEnter -= OnLevelObjectContact;
         }
     }
 }
