@@ -6,22 +6,29 @@ namespace DurkaSimRemastered
 {
     public class OptionsButtonController : ICleanup
     {
-        private readonly UIButtonView _buttonView;
+        private readonly UIButtonView _optionsButtonView;
+        private readonly RectTransform _mainLayout;
+        private readonly RectTransform _optionsLayout;
 
-        public OptionsButtonController(UIButtonView buttonView)
+        public OptionsButtonController(UIButtonView optionsButtonView,
+            RectTransform mainLayout, RectTransform optionsLayout)
         {
-            _buttonView = buttonView;
-            _buttonView.Button.onClick.AddListener(OnOptionsButtonPressed);
+            _optionsButtonView = optionsButtonView;
+            _mainLayout = mainLayout;
+            _optionsLayout = optionsLayout;
+            _optionsButtonView.Button.onClick.AddListener(OnOptionsButtonPressed);
         }
 
         private void OnOptionsButtonPressed()
         {
-            _buttonView.AudioSource.Play();
+            _optionsButtonView.AudioSource.Play();
+            _mainLayout.gameObject.SetActive(false);
+            _optionsLayout.gameObject.SetActive(true);
         }
 
         public void Cleanup()
         {
-            _buttonView.Button.onClick.RemoveAllListeners();
+            _optionsButtonView.Button.onClick.RemoveAllListeners();
         }
     }
 }

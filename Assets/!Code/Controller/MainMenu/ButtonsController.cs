@@ -1,4 +1,6 @@
 using DurkaSimRemastered.Interface;
+using UnityEngine;
+using UnityEngine.Audio;
 
 
 namespace DurkaSimRemastered
@@ -8,7 +10,10 @@ namespace DurkaSimRemastered
         private readonly Controllers _controllers;
         
         public ButtonsController(UIButtonView playButton, UIButtonView optionsButton,
-            UIButtonView exitButton, FaderView faderView)
+            UIButtonView exitButton, UIButtonView backFromOptionsButton,
+            FaderView faderView, RectTransform mainLayout, 
+            RectTransform optionsLayout, UISliderView masterVolumeSlider,
+            AudioMixer mainAudioMixer)
         {
             _controllers = new Controllers();
             
@@ -16,10 +21,18 @@ namespace DurkaSimRemastered
                 new PlayButtonController(playButton));
             
             _controllers.AddController(
-                new OptionsButtonController(optionsButton));
-            
+                new OptionsButtonController(optionsButton, mainLayout,
+                    optionsLayout));
+
             _controllers.AddController(
                 new ExitButtonController(exitButton, faderView));
+            
+            _controllers.AddController(
+                new BackFromOptionsButtonController(backFromOptionsButton, 
+                    mainLayout, optionsLayout));
+            
+            _controllers.AddController(
+                new MasterVolumeSliderController(masterVolumeSlider, mainAudioMixer));
         }
         
         public void Cleanup()

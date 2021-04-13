@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Audio;
 
 
 namespace DurkaSimRemastered
@@ -8,7 +9,12 @@ namespace DurkaSimRemastered
         [SerializeField] private UIButtonView _playButton;
         [SerializeField] private UIButtonView _optionsButton;
         [SerializeField] private UIButtonView _exitButton;
+        [SerializeField] private UIButtonView _backFromOptionsButton;
+        [SerializeField] private UISliderView _masterVolumeSlider;
         [SerializeField] private FaderView _faderView;
+        [SerializeField] private RectTransform _mainLayout;
+        [SerializeField] private RectTransform _optionsLayout;
+        [SerializeField] private AudioMixer _audioMixer;
 
         [SerializeField] private Transform[] _backgroundTransforms;
 
@@ -20,7 +26,9 @@ namespace DurkaSimRemastered
             
             _controllers.AddController(
                 new ButtonsController(_playButton, _optionsButton,
-                    _exitButton, _faderView));
+                    _exitButton, _backFromOptionsButton, 
+                    _faderView, _mainLayout, _optionsLayout,
+                    _masterVolumeSlider, _audioMixer));
             
             _controllers.AddController(
                 new BackgroundController(_backgroundTransforms));

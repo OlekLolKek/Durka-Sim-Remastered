@@ -47,13 +47,13 @@ namespace DurkaSimRemastered
 
         private void OnPlayerWon()
         {
-            _winCoroutine = ExitToMainMenu().ToObservable().Subscribe();
+            _winCoroutine = LoadCredits().ToObservable().Subscribe();
         }
 
-        private IEnumerator ExitToMainMenu()
+        private IEnumerator LoadCredits()
         {
             yield return new WaitForSeconds(DeathTimings.FADE_IN_TIME + DeathTimings.PAUSE_TIME);
-            SceneManager.LoadScene(0);
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         }
 
         private void OnPlayerLost()

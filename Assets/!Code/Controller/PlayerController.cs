@@ -119,7 +119,8 @@ namespace DurkaSimRemastered
                 }
             }
 
-            _playerView.Rigidbody2D.velocity = _playerView.Rigidbody2D.velocity.Change(x: newVelocity);
+            _playerView.Rigidbody2D.velocity = 
+                _playerView.Rigidbody2D.velocity.Change(x: newVelocity);
         }
 
         private void Jump()
